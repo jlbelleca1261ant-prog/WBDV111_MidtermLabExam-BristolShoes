@@ -873,125 +873,278 @@ footer .logo-icon { background: #1B2A4A; color: white; }
 
 
 /* ==============================================
-   BRIX MASCOT — All Page Animations
+   BRIX MASCOT — Professional Animation System
+   High-detail PNG + CSS @keyframes choreography
    ============================================== */
 
-/* ── Shared bubble ── */
+/* ── Character image (shared) ── */
+.bx-character {
+    width: 100px; height: auto;
+    pointer-events: all;
+    cursor: pointer;
+    user-select: none;
+    filter: drop-shadow(0 6px 16px rgba(0,0,0,0.35));
+    transition: filter 0.2s;
+}
+.bx-character:hover {
+    filter: drop-shadow(0 6px 16px rgba(0,0,0,0.35)) brightness(1.06);
+}
+
+/* ── Chat Bubble (shared) ── */
 .bx-bubble {
     position: absolute;
-    bottom: 105px; left: 0;
-    min-width: 200px; max-width: 230px;
+    bottom: calc(100% + 12px);
+    left: 50%;
+    transform: translateX(-50%) translateY(8px) scale(0.92);
+    min-width: 210px; max-width: 250px;
     background: var(--bg-card);
+    backdrop-filter: blur(14px) saturate(180%);
+    -webkit-backdrop-filter: blur(14px) saturate(180%);
     border: 1.5px solid var(--border);
-    border-radius: 16px;
-    padding: 12px 32px 10px 14px;
-    box-shadow: 0 6px 24px rgba(0,0,0,0.18);
-    opacity: 0; pointer-events: none;
-    transform: translateY(6px) scale(0.95);
-    transition: opacity 0.25s, transform 0.25s;
-    z-index: 10;
+    border-radius: 18px;
+    padding: 14px 34px 12px 16px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.22);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.35s ease, transform 0.35s cubic-bezier(0.34,1.56,0.64,1);
+    z-index: 60;
 }
-.bx-bubble.visible { opacity: 1; pointer-events: all; transform: translateY(0) scale(1); }
-/* Tail */
+.bx-bubble.show {
+    opacity: 1;
+    pointer-events: all;
+    transform: translateX(-50%) translateY(0) scale(1);
+}
+/* Tail arrow */
 .bx-bubble::after {
-    content: ''; position: absolute;
-    bottom: -9px; left: 24px;
-    border: 8px solid transparent;
+    content: '';
+    position: absolute;
+    bottom: -10px; left: 50%; transform: translateX(-50%);
+    border: 10px solid transparent;
     border-top-color: var(--bg-card);
 }
 .bx-bubble::before {
-    content: ''; position: absolute;
-    bottom: -11px; left: 23px;
-    border: 9px solid transparent;
+    content: '';
+    position: absolute;
+    bottom: -13px; left: 50%; transform: translateX(-50%);
+    border: 11px solid transparent;
     border-top-color: var(--border);
 }
-.bx-msg  { font-size: 13px; color: var(--text); line-height: 1.5; margin: 0 0 8px; min-height: 36px; }
-.bx-close { position: absolute; top: 6px; right: 8px; background: none; border: none;
-    font-size: 17px; color: var(--text-soft); cursor: pointer; line-height: 1; padding: 2px 4px; }
+
+.bx-msg {
+    font-size: 13px;
+    color: var(--text);
+    line-height: 1.55;
+    margin: 0 0 8px;
+    min-height: 34px;
+    font-weight: 400;
+}
+.bx-close {
+    position: absolute; top: 7px; right: 10px;
+    background: none; border: none;
+    font-size: 18px; line-height: 1;
+    color: var(--text-soft);
+    cursor: pointer; padding: 2px 4px;
+    transition: color 0.15s;
+}
 .bx-close:hover { color: var(--text); }
-.bx-next { background: none; border: none; font-size: 11px; font-weight: 600;
-    color: var(--accent); cursor: pointer; padding: 0; letter-spacing: 0.03em; }
-.bx-next:hover { opacity: 0.75; }
-
-/* ── Mascot image – NO background, blends with page ── */
-#bx-img svg { filter: drop-shadow(0 4px 10px rgba(0,0,0,0.22)); }
-#bx-img:hover svg { filter: drop-shadow(0 4px 10px rgba(0,0,0,0.22)) brightness(1.08); }
-
-/* ── HOME: Rope ── */
-#bx-rope {
-    position: absolute; z-index: 48;
-    width: 3px; height: 0;
-    background: linear-gradient(to bottom, rgba(201,168,76,0.3), #C9A84C);
-    border-radius: 2px;
-    transition: height 0.9s cubic-bezier(0.25,0.46,0.45,0.94);
-    transform-origin: top center;
+.bx-next {
+    background: none; border: none;
+    font-size: 11px; font-weight: 600;
+    color: var(--accent);
+    cursor: pointer; padding: 0;
+    letter-spacing: 0.04em;
+    transition: opacity 0.15s;
 }
-#bx-rope.drop    { height: 180px; }
-#bx-rope.retract { height: 0; transition: height 0.4s ease-in; }
+.bx-next:hover { opacity: 0.7; }
 
-/* Walking steps illusion */
-@keyframes bx-step {
-    0%,100% { transform: rotate(0deg);   }
-    25%      { transform: rotate(-6deg);  }
-    75%      { transform: rotate(6deg);   }
-}
-#bx-scene.walking #bx-img { animation: bx-step 0.3s steps(1) infinite; }
 
-/* ── ABOUT: Peek up from behind h1 ── */
-.bx-peek {
+/* ═══════════════════════════════════════════════
+   HOME — Shoelace Drop → Walk → Idle at edge
+   ═══════════════════════════════════════════════ */
+
+.bx-home-container {
     position: absolute;
-    right: 8%; bottom: 0;
+    top: -120px;
+    right: -10px;
     z-index: 50;
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    pointer-events: none;
+    animation:
+        bxHomeDrop 1.2s 0.5s cubic-bezier(0.22,1,0.36,1) forwards,
+        bxHomeWalk 2s 2s steps(10) forwards;
+}
+
+/* The shoelace / rope */
+.bx-shoelace {
+    position: absolute;
+    top: -200px; left: 50%;
+    transform: translateX(-50%);
+    width: 3px; height: 0;
+    background: linear-gradient(to bottom, rgba(201,168,76,0.2), #C9A84C 60%, #8B6914);
+    border-radius: 2px;
+    animation: bxLaceDrop 0.8s 0.3s ease-out forwards,
+               bxLaceRetract 0.5s 2s ease-in forwards;
+}
+
+@keyframes bxLaceDrop {
+    from { height: 0; }
+    to   { height: 220px; }
+}
+@keyframes bxLaceRetract {
+    from { height: 220px; opacity: 1; }
+    to   { height: 0; opacity: 0; }
+}
+
+@keyframes bxHomeDrop {
+    from { top: -120px; opacity: 0; }
+    to   { top: -85px;  opacity: 1; }
+}
+
+@keyframes bxHomeWalk {
+    from { right: -10px; }
+    to   { right: calc(100% - 60px); }
+}
+
+/* Idle breathing after arriving */
+.bx-home-container.arrived .bx-character {
+    animation: bxBreathe 3s ease-in-out infinite;
+}
+
+.bx-home-container .bx-bubble {
+    bottom: calc(100% + 8px);
+    left: auto; right: -40px;
+    transform: translateX(0) translateY(8px) scale(0.92);
+}
+.bx-home-container .bx-bubble.show {
+    transform: translateX(0) translateY(0) scale(1);
+}
+.bx-home-container .bx-bubble::after {
+    left: auto; right: 30px; transform: none;
+}
+.bx-home-container .bx-bubble::before {
+    left: auto; right: 29px; transform: none;
+}
+
+
+/* ═══════════════════════════════════════════════
+   ABOUT — Peek up from behind heading text
+   ═══════════════════════════════════════════════ */
+
+.bx-about-container {
+    position: absolute;
+    bottom: -10px; right: -60px;
+    z-index: -1;     /* Behind the text */
+    display: inline-block;
     transform: translateY(100%);
-    transition: transform 0.7s cubic-bezier(0.34,1.56,0.64,1);
+    transition: transform 0.8s cubic-bezier(0.34,1.56,0.64,1);
+    pointer-events: none;
 }
-.bx-peek .bx-bubble { bottom: 90px; left: auto; right: 0; }
-.bx-peek .bx-bubble::after  { left: auto; right: 24px; }
-.bx-peek .bx-bubble::before { left: auto; right: 23px; }
-.bx-peek.peekup { transform: translateY(38%); }
+.bx-about-container .bx-character {
+    width: 80px;
+}
+.bx-about-container.peek {
+    transform: translateY(25%);
+    pointer-events: all;
+}
+.bx-about-container.peek .bx-character {
+    animation: bxBreathe 3s ease-in-out infinite;
+}
 
-/* ── PRODUCTS: Slide in from right ── */
-.bx-fixed {
-    position: fixed; bottom: 24px; right: -120px;
+.bx-about-container .bx-bubble {
+    bottom: calc(100% + 8px);
+    left: auto; right: -30px;
+    transform: translateX(0) translateY(8px) scale(0.92);
+}
+.bx-about-container .bx-bubble.show {
+    transform: translateX(0) translateY(0) scale(1);
+}
+.bx-about-container .bx-bubble::after {
+    left: auto; right: 26px; transform: none;
+}
+.bx-about-container .bx-bubble::before {
+    left: auto; right: 25px; transform: none;
+}
+
+
+/* ═══════════════════════════════════════════════
+   PRODUCTS — Slide in from right edge
+   ═══════════════════════════════════════════════ */
+
+.bx-products-container {
+    position: fixed;
+    bottom: 24px; right: -140px;
     z-index: 9999;
-    transition: right 0.7s cubic-bezier(0.34,1.56,0.64,1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: right 0.8s cubic-bezier(0.34,1.56,0.64,1);
 }
-.bx-fixed .bx-bubble { left: auto; right: 0; bottom: 100px; }
-.bx-fixed .bx-bubble::after  { left: auto; right: 24px; }
-.bx-fixed .bx-bubble::before { left: auto; right: 23px; }
-.bx-fixed.arrived { right: 24px; }
+.bx-products-container.arrived { right: 28px; }
+.bx-products-container.arrived .bx-character {
+    animation: bxBreathe 3s ease-in-out infinite;
+}
 
-/* ── CONTACT: Bounce up from bottom ── */
-.bx-bounceup {
-    position: fixed; bottom: -140px; left: 24px;
+.bx-products-container .bx-bubble {
+    right: 0; left: auto;
+    transform: translateX(0) translateY(8px) scale(0.92);
+}
+.bx-products-container .bx-bubble.show {
+    transform: translateX(0) translateY(0) scale(1);
+}
+.bx-products-container .bx-bubble::after {
+    left: auto; right: 30px; transform: none;
+}
+.bx-products-container .bx-bubble::before {
+    left: auto; right: 29px; transform: none;
+}
+
+
+/* ═══════════════════════════════════════════════
+   CONTACT — Pop up from bottom
+   ═══════════════════════════════════════════════ */
+
+.bx-contact-container {
+    position: fixed;
+    bottom: -160px; left: 28px;
     z-index: 9999;
-    transition: bottom 0.7s cubic-bezier(0.34,1.56,0.64,1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: bottom 0.8s cubic-bezier(0.34,1.56,0.64,1);
 }
-.bx-bounceup .bx-bubble { bottom: 100px; }
-.bx-bounceup.arrived { bottom: 24px; }
-
-/* ── Idle bob for all pages ── */
-@keyframes bx-bob {
-    0%,100% { transform: translateY(0); }
-    50%      { transform: translateY(-7px); }
+.bx-contact-container.arrived { bottom: 24px; }
+.bx-contact-container.arrived .bx-character {
+    animation: bxBreathe 3s ease-in-out infinite;
 }
-#bx-img { animation: bx-bob 2.8s ease-in-out infinite; cursor: pointer; user-select: none; }
 
-/* ── Waving arm wiggle ── */
-@keyframes bx-wave {
-    0%,100% { transform: rotate(0deg);  transform-origin: bottom center; }
-    30%      { transform: rotate(25deg); transform-origin: bottom center; }
-    60%      { transform: rotate(-8deg); transform-origin: bottom center; }
+
+/* ═══════════════════════════════════════════════
+   SHARED — Idle breathing animation
+   ═══════════════════════════════════════════════ */
+
+@keyframes bxBreathe {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    30%      { transform: translateY(-6px) rotate(-1.5deg); }
+    70%      { transform: translateY(-3px) rotate(1deg); }
 }
-.brix-arm { animation: bx-wave 1.4s ease-in-out 3; }
 
-/* ── Mobile adjustments ── */
+
+/* ═══════════════════════════════════════════════
+   MOBILE ADJUSTMENTS
+   ═══════════════════════════════════════════════ */
+
 @media (max-width: 680px) {
-    .bx-peek  { right: 4%; }
-    .bx-fixed { bottom: 80px; }
-    .bx-bounceup.arrived { bottom: 80px; }
-    #bx-img svg { width: 62px; height: auto; }
-    .bx-bubble { max-width: 190px; min-width: 170px; }
+    .bx-character { width: 72px; }
+    .bx-bubble { min-width: 180px; max-width: 210px; font-size: 12px; }
+
+    .bx-home-container { right: 0; }
+    .bx-about-container { right: -30px; }
+    .bx-about-container .bx-character { width: 60px; }
+
+    .bx-products-container.arrived { right: 16px; bottom: 80px; }
+    .bx-contact-container.arrived  { left: 16px; bottom: 80px; }
 }
 
 

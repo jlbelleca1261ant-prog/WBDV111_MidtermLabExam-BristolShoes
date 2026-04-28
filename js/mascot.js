@@ -1,234 +1,205 @@
 // ============================================================
-//  Bristol Shoes — Brix the Cobbler Mascot
-//  4 unique animations per page. Fully transparent SVG character.
+//  Bristol Shoes — Brix the Cobbler  (Professional Mascot Engine)
+//  Uses high-detail PNGs + CSS @keyframes for movement.
+//  Bubbles revealed via JS animationend listeners.
 // ============================================================
 (function () {
     'use strict';
 
-    // ── Inline SVG (transparent, no white box) ──
-    var SVG = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 90 110" width="78" height="95" style="overflow:visible">'
-        + '<rect x="20" y="65" width="50" height="45" rx="11" fill="#1B2A4A"/>'
-        + '<rect x="27" y="60" width="36" height="50" rx="8" fill="#2A3F6F"/>'
-        + '<rect x="33" y="80" width="24" height="16" rx="4" fill="#1B2A4A" opacity="0.4"/>'
-        + '<circle cx="45" cy="40" r="26" fill="#D4956A"/>'
-        + '<ellipse cx="45" cy="17" rx="26" ry="8" fill="#1B2A4A"/>'
-        + '<rect x="22" y="11" width="46" height="15" rx="8" fill="#1B2A4A"/>'
-        + '<circle cx="36" cy="39" r="5" fill="white"/><circle cx="54" cy="39" r="5" fill="white"/>'
-        + '<circle cx="37" cy="40" r="3" fill="#1B2A4A"/><circle cx="55" cy="40" r="3" fill="#1B2A4A"/>'
-        + '<circle cx="38" cy="38" r="1.2" fill="white"/><circle cx="56" cy="38" r="1.2" fill="white"/>'
-        + '<ellipse cx="29" cy="48" rx="5" ry="3" fill="#E8908A" opacity="0.5"/>'
-        + '<ellipse cx="61" cy="48" rx="5" ry="3" fill="#E8908A" opacity="0.5"/>'
-        + '<path d="M34 54 Q45 64 56 54" stroke="#994422" stroke-width="2.5" fill="none" stroke-linecap="round"/>'
-        // Waving left arm
-        + '<g class="brix-arm"><path d="M20 75 Q5 58 12 36" stroke="#D4956A" stroke-width="10" fill="none" stroke-linecap="round"/>'
-        + '<circle cx="12" cy="33" r="7" fill="#D4956A"/></g>'
-        // Right arm + shoe
-        + '<path d="M70 75 Q85 70 82 56" stroke="#D4956A" stroke-width="10" fill="none" stroke-linecap="round"/>'
-        + '<path d="M74 50 Q82 44 91 50 Q89 57 74 54 Z" fill="#8B4513"/>'
-        + '<path d="M76 48 Q82 43 89 48" stroke="#5C2E0A" stroke-width="1.5" fill="none"/>'
-        + '</svg>';
-
-    // ── Messages ──
-    var path = window.location.pathname;
+    // ── Per-page images & messages ──
+    var POSES = {
+        home:     'images/brix-wave.png',
+        about:    'images/brix-peek.png',
+        products: 'images/brix-think.png',
+        contact:  'images/brix-friendly.png'
+    };
     var MSGS = {
-        home:     ['Hey there! 👟 Welcome to Bristol Shoes!', 'These shoes? They outlast trends AND ex-lovers. 😏'],
-        about:    ['Curious about us? Already loving your taste! 🇵🇭', 'Every Bristol shoe is born right here in Marikina. Proud of it!'],
-        products: ['Hmm… shopping for shoes, huh? Good timing! 👀', "Don't overthink it — your feet deserve the upgrade. Trust me. 😄"],
-        contact:  ["Need help? Don't be shy, we don't bite! 😊", 'We reply in 1–2 days. We\'re busy cobblers! 🔨']
+        home:     ['Hey there! 👟 Welcome to Bristol Shoes — where every step tells a story!',
+                   'These shoes? Handcrafted in Marikina. They outlast trends AND your ex. 😏'],
+        about:    ['Psst… curious about us? Great taste already! 🇵🇭',
+                   'Every Bristol shoe is born right here in Marikina. Pretty cool, right?'],
+        products: ['Hmm… shopping for new kicks? You came to the right place! 👀',
+                   "Don't overthink it — your feet deserve the upgrade. Trust me. 😄"],
+        contact:  ['Need help? Drop us a message — we don\'t bite! 😊',
+                   'We reply in 1–2 business days. Busy cobblers, you know! 🔨']
     };
 
+    var path = window.location.pathname;
     function getKey() {
         if (path.includes('about'))    return 'about';
         if (path.includes('products')) return 'products';
         if (path.includes('contact'))  return 'contact';
         return 'home';
     }
-
-    var msgs = MSGS[getKey()], msgIdx = 0;
-
-    // ── Shared bubble HTML ──
-    var BUBBLE_HTML = '<div class="bx-bubble" id="bx-bubble">'
-        + '<button class="bx-close" id="bx-close" title="Close">×</button>'
-        + '<p class="bx-msg" id="bx-msg"></p>'
-        + (msgs.length > 1 ? '<button class="bx-next" id="bx-next">Next tip →</button>' : '')
-        + '</div>';
+    var KEY  = getKey();
+    var msgs = MSGS[KEY];
+    var pose = POSES[KEY];
+    var msgIdx = 0;
 
     // ── Typing effect ──
-    function type(text) {
-        var el = document.getElementById('bx-msg');
+    function typeText(el, text, cb) {
         el.textContent = '';
         var i = 0;
-        var t = setInterval(function () { el.textContent += text[i++]; if (i >= text.length) clearInterval(t); }, 30);
+        var t = setInterval(function () {
+            el.textContent += text[i++];
+            if (i >= text.length) { clearInterval(t); if (cb) cb(); }
+        }, 25);
     }
 
-    function showBubble() {
-        var b = document.getElementById('bx-bubble');
-        if (b) { b.classList.add('visible'); type(msgs[msgIdx]); }
+    // ── Show / hide bubble ──
+    function showBubble(container) {
+        var bubble = container.querySelector('.bx-bubble');
+        var msgEl  = container.querySelector('.bx-msg');
+        if (!bubble || !msgEl) return;
+        bubble.classList.add('show');
+        typeText(msgEl, msgs[msgIdx]);
+    }
+    function hideBubble(container) {
+        var bubble = container.querySelector('.bx-bubble');
+        if (bubble) bubble.classList.remove('show');
     }
 
-    function bindButtons() {
-        var close = document.getElementById('bx-close');
-        var next  = document.getElementById('bx-next');
-        var img   = document.getElementById('bx-img');
-        if (close) close.addEventListener('click', function (e) { e.stopPropagation(); document.getElementById('bx-bubble').classList.remove('visible'); });
-        if (next)  next.addEventListener('click',  function (e) { e.stopPropagation(); msgIdx = (msgIdx + 1) % msgs.length; type(msgs[msgIdx]); });
-        if (img)   img.addEventListener('click', function () {
-            var b = document.getElementById('bx-bubble');
-            b.classList.contains('visible') ? b.classList.remove('visible') : showBubble();
+    // ── Build bubble HTML ──
+    function bubbleHTML() {
+        return '<div class="bx-bubble">'
+            + '<button class="bx-close" aria-label="Close">×</button>'
+            + '<p class="bx-msg"></p>'
+            + (msgs.length > 1 ? '<button class="bx-next">Next tip →</button>' : '')
+            + '</div>';
+    }
+
+    // ── Bind bubble events ──
+    function bindBubble(container) {
+        var close = container.querySelector('.bx-close');
+        var next  = container.querySelector('.bx-next');
+        var img   = container.querySelector('.bx-character');
+
+        if (close) close.addEventListener('click', function (e) {
+            e.stopPropagation(); hideBubble(container);
+        });
+        if (next) next.addEventListener('click', function (e) {
+            e.stopPropagation();
+            msgIdx = (msgIdx + 1) % msgs.length;
+            typeText(container.querySelector('.bx-msg'), msgs[msgIdx]);
+        });
+        if (img) img.addEventListener('click', function () {
+            var bubble = container.querySelector('.bx-bubble');
+            if (bubble.classList.contains('show')) hideBubble(container);
+            else showBubble(container);
         });
     }
 
 
-    // ════════════════════════════════════════════
-    //  HOME — Shoelace rappel → walk → chat
-    // ════════════════════════════════════════════
+    // ════════════════════════════════════════════════════════
+    //  HOME — Drop on shoelace → land on h1 → walk → chat
+    // ════════════════════════════════════════════════════════
     function initHome() {
-        var hero = document.querySelector('.hero');
-        var h1   = document.querySelector('.hero-text h1');
-        var em   = document.querySelector('.hero-text h1 em');
-        if (!hero || !h1) return;
+        var heroText = document.querySelector('.hero-text');
+        var h1 = document.querySelector('.hero-text h1');
+        if (!heroText || !h1) return;
 
-        hero.style.position = 'relative';
+        // Make h1 the positioning anchor
+        h1.style.position = 'relative';
+        h1.style.display  = 'inline-block';
 
-        hero.insertAdjacentHTML('beforeend',
-            '<div id="bx-rope"></div>'
-            + '<div id="bx-scene" style="position:absolute;top:-110px;z-index:50">'
-            + '<div id="bx-img" style="cursor:pointer" title="Click me!">' + SVG + '</div>'
-            + BUBBLE_HTML + '</div>'
+        // Inject Brix container inside h1 so he's anchored to the text
+        h1.insertAdjacentHTML('beforeend',
+            '<span id="bx-home" class="bx-home-container">'
+            +   '<span class="bx-shoelace"></span>'
+            +   '<img class="bx-character" src="' + pose + '" alt="Brix the Cobbler" draggable="false">'
+            +   bubbleHTML()
+            + '</span>'
         );
 
-        // Compute positions after layout
-        requestAnimationFrame(function () {
-            var heroRect = hero.getBoundingClientRect();
-            var emRect   = em  ? em.getBoundingClientRect()  : h1.getBoundingClientRect();
-            var h1Rect   = h1.getBoundingClientRect();
+        var container = document.getElementById('bx-home');
+        bindBubble(container);
 
-            // X: right edge of "Timeless", relative to hero
-            var landX = emRect.right - heroRect.left - 40;
-            // Y: top of h1 text relative to hero  
-            var landY = h1Rect.top - heroRect.top - 90;
-            // Walk start: left of "Timeless" word
-            var walkX = emRect.left - heroRect.left - 5;
-
-            var rope  = document.getElementById('bx-rope');
-            var scene = document.getElementById('bx-scene');
-
-            // Position rope above end of Timeless word
-            rope.style.left  = (emRect.right - heroRect.left - 2) + 'px';
-            rope.style.top   = '0px';
-
-            // Brix starts above viewport, centered on rope
-            scene.style.left = landX + 'px';
-            scene.style.top  = '-110px';
-
-            // ── SEQUENCE ──
-            // 1. Rope drops (0.4s delay)
-            setTimeout(function () { rope.classList.add('drop'); }, 400);
-
-            // 2. Brix slides down rope
-            setTimeout(function () {
-                scene.style.transition = 'top 1.4s cubic-bezier(0.25,0.1,0.25,1)';
-                scene.style.top = landY + 'px';
-            }, 600);
-
-            // 3. Rope retracts
-            setTimeout(function () { rope.classList.remove('drop'); rope.classList.add('retract'); }, 2100);
-
-            // 4. Brix walks left → right across h1 text
-            setTimeout(function () {
-                scene.style.left = walkX + 'px';
-                scene.style.top  = landY + 'px';
-                scene.style.transition = 'none';
-                // then walk right
-                requestAnimationFrame(function () {
-                    scene.style.transition = 'left 1.8s steps(12, end)';
-                    scene.style.left = landX + 'px';
-                    scene.classList.add('walking');
-                });
-            }, 2400);
-
-            // 5. Chat bubble appears
-            setTimeout(function () {
-                scene.classList.remove('walking');
-                showBubble();
-            }, 4500);
-
-            bindButtons();
+        // Chat appears after the CSS animation ends
+        container.addEventListener('animationend', function (e) {
+            if (e.animationName === 'bxHomeWalk') {
+                container.classList.add('arrived');
+                setTimeout(function () { showBubble(container); }, 400);
+            }
         });
     }
 
 
-    // ════════════════════════════════════════════
-    //  ABOUT — Peek up from behind "Story" text
-    // ════════════════════════════════════════════
+    // ════════════════════════════════════════════════════════
+    //  ABOUT — Peek up from behind "Our Story" heading
+    // ════════════════════════════════════════════════════════
     function initAbout() {
-        var ph = document.querySelector('.page-header');
-        var h1 = document.querySelector('.page-header h1');
-        if (!ph) return;
+        var header = document.querySelector('.page-header');
+        var h1     = document.querySelector('.page-header h1');
+        if (!header || !h1) return;
 
-        ph.style.position = 'relative';
-        ph.style.overflow  = 'visible';
+        header.style.position = 'relative';
+        header.style.overflow = 'visible';
 
-        ph.insertAdjacentHTML('beforeend',
-            '<div id="bx-scene" class="bx-peek">'
-            + '<div id="bx-img" style="cursor:pointer" title="Click me!">' + SVG + '</div>'
-            + BUBBLE_HTML + '</div>'
+        // Find the <em> or last word
+        var anchor = h1.querySelector('em') || h1;
+
+        anchor.style.position = 'relative';
+        anchor.style.display  = 'inline-block';
+
+        anchor.insertAdjacentHTML('beforeend',
+            '<span id="bx-about" class="bx-about-container">'
+            +   '<img class="bx-character" src="' + pose + '" alt="Brix peeking" draggable="false">'
+            +   bubbleHTML()
+            + '</span>'
         );
 
-        requestAnimationFrame(function () {
-            var phRect = ph.getBoundingClientRect();
-            var h1Rect = h1 ? h1.getBoundingClientRect() : phRect;
-            var scene  = document.getElementById('bx-scene');
+        var container = document.getElementById('bx-about');
+        bindBubble(container);
 
-            // Position peeking from behind right side of the h1
-            scene.style.right  = '12%';
-            scene.style.bottom = '0px';
-
-            // Peek animation after delay
-            setTimeout(function () { scene.classList.add('peekup'); }, 800);
-            setTimeout(function () { showBubble(); }, 2200);
-            bindButtons();
-        });
+        // Trigger peek after 0.8s
+        setTimeout(function () { container.classList.add('peek'); }, 800);
+        // Show bubble after peek finishes
+        setTimeout(function () { showBubble(container); }, 2400);
     }
 
 
-    // ════════════════════════════════════════════
-    //  PRODUCTS — Slide in from right + bounce
-    // ════════════════════════════════════════════
+    // ════════════════════════════════════════════════════════
+    //  PRODUCTS — Slide in from right edge
+    // ════════════════════════════════════════════════════════
     function initProducts() {
-        var wrap = document.createElement('div');
-        wrap.id = 'bx-scene';
-        wrap.className = 'bx-fixed bx-slideright';
-        wrap.innerHTML = '<div id="bx-img" style="cursor:pointer" title="Click me!">' + SVG + '</div>' + BUBBLE_HTML;
-        document.body.appendChild(wrap);
+        var el = document.createElement('div');
+        el.id = 'bx-products';
+        el.className = 'bx-products-container';
+        el.innerHTML = '<img class="bx-character" src="' + pose + '" alt="Brix thinking" draggable="false">'
+                     + bubbleHTML();
+        document.body.appendChild(el);
 
-        setTimeout(function () { wrap.classList.add('arrived'); }, 600);
-        setTimeout(function () { showBubble(); }, 2000);
-        bindButtons();
+        bindBubble(el);
+
+        // Slide in after 0.6s
+        setTimeout(function () { el.classList.add('arrived'); }, 600);
+        // Chat after arrival
+        setTimeout(function () { showBubble(el); }, 2000);
     }
 
 
-    // ════════════════════════════════════════════
-    //  CONTACT — Bounce up from bottom
-    // ════════════════════════════════════════════
+    // ════════════════════════════════════════════════════════
+    //  CONTACT — Pop up from bottom
+    // ════════════════════════════════════════════════════════
     function initContact() {
-        var wrap = document.createElement('div');
-        wrap.id = 'bx-scene';
-        wrap.className = 'bx-fixed bx-bounceup';
-        wrap.innerHTML = '<div id="bx-img" style="cursor:pointer" title="Click me!">' + SVG + '</div>' + BUBBLE_HTML;
-        document.body.appendChild(wrap);
+        var el = document.createElement('div');
+        el.id = 'bx-contact';
+        el.className = 'bx-contact-container';
+        el.innerHTML = '<img class="bx-character" src="' + pose + '" alt="Brix waving" draggable="false">'
+                     + bubbleHTML();
+        document.body.appendChild(el);
 
-        setTimeout(function () { wrap.classList.add('arrived'); }, 700);
-        setTimeout(function () { showBubble(); }, 2000);
-        bindButtons();
+        bindBubble(el);
+
+        setTimeout(function () { el.classList.add('arrived'); }, 700);
+        setTimeout(function () { showBubble(el); }, 2200);
     }
 
 
     // ── Route ──
-    var k = getKey();
-    if      (k === 'home')     initHome();
-    else if (k === 'about')    initAbout();
-    else if (k === 'products') initProducts();
-    else                       initContact();
+    if      (KEY === 'home')     initHome();
+    else if (KEY === 'about')    initAbout();
+    else if (KEY === 'products') initProducts();
+    else                         initContact();
 
 })();
