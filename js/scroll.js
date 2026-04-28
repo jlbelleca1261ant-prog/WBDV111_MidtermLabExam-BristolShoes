@@ -7,7 +7,6 @@
 (function () {
 
     // ── 1. Mark all animatable elements with .reveal class ──
-    // We target the main content containers, not every element.
     const targets = [
         '.card', '.product', '.stat',
         '.two-col .col', '.contact-row > div',
@@ -22,29 +21,25 @@
     });
 
 
-    // ── 2. IntersectionObserver — fires when element enters viewport ──
-    // More performant than scroll event listeners — runs off main thread.
+    // ── 2. IntersectionObserver ──
     var observer = new IntersectionObserver(function (entries) {
         entries.forEach(function (entry) {
             if (entry.isIntersecting) {
                 entry.target.classList.add('visible');
-                // Once visible, stop watching it (no need to re-animate)
                 observer.unobserve(entry.target);
             }
         });
     }, {
-        threshold: 0.12,      // trigger when 12% of element is visible
-        rootMargin: '0px 0px -40px 0px'  // trigger slightly before fully in view
+        threshold: 0.12,
+        rootMargin: '0px 0px -40px 0px'
     });
 
-    // Observe every .reveal element
     document.querySelectorAll('.reveal').forEach(function (el) {
         observer.observe(el);
     });
 
 
     // ── 3. Stagger delay for card groups ──
-    // Cards in the same row animate one after another (not all at once).
     ['cards', 'products', 'stats'].forEach(function (cls) {
         document.querySelectorAll('.' + cls).forEach(function (group) {
             Array.from(group.children).forEach(function (child, index) {
@@ -55,7 +50,6 @@
 
 
     // ── 4. Navbar scroll effect ──
-    // Increase shadow when user scrolls down to give more "depth".
     var nav = document.querySelector('nav');
     if (nav) {
         window.addEventListener('scroll', function () {
@@ -64,7 +58,40 @@
             } else {
                 nav.style.boxShadow = '';
             }
-        }, { passive: true });  // passive = never blocks scroll (performance)
+        }, { passive: true });
+    }
+
+
+    // ── 5. Hamburger menu toggle ──
+    var toggle   = document.getElementById('nav-toggle');
+    var mobileMenu = document.getElementById('mobile-nav-menu');
+
+    if (toggle && mobileMenu) {
+        // Open / close on hamburger click
+        toggle.addEventListener('click', function (e) {
+            e.stopPropagation();
+            var isOpen = mobileMenu.classList.toggle('open');
+            toggle.classList.toggle('open', isOpen);
+            toggle.setAttribute('aria-expanded', isOpen);
+        });
+
+        // Close when a nav link is tapped
+        mobileMenu.querySelectorAll('a').forEach(function (link) {
+            link.addEventListener('click', function () {
+                mobileMenu.classList.remove('open');
+                toggle.classList.remove('open');
+                toggle.setAttribute('aria-expanded', false);
+            });
+        });
+
+        // Close when tapping outside the nav
+        document.addEventListener('click', function (e) {
+            if (!nav.contains(e.target) && !mobileMenu.contains(e.target)) {
+                mobileMenu.classList.remove('open');
+                toggle.classList.remove('open');
+                toggle.setAttribute('aria-expanded', false);
+            }
+        });
     }
 
 })();

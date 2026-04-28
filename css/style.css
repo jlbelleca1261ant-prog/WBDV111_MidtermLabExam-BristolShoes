@@ -768,18 +768,108 @@ footer .logo-icon { background: #1B2A4A; color: white; }
 
 
 /* ==============================================
+   HAMBURGER TOGGLE
+   ============================================== */
+
+.nav-toggle {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    width: 36px; height: 36px;
+    background: none; border: none;
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 8px;
+    flex-shrink: 0;
+    transition: background 0.2s;
+    z-index: 10;
+}
+.nav-toggle:hover { background: rgba(168,192,224,0.15); }
+
+.nav-toggle span {
+    display: block;
+    width: 22px; height: 2px;
+    background: var(--nav-text);
+    border-radius: 2px;
+    transition: transform 0.3s ease, opacity 0.3s ease, width 0.3s ease;
+    transform-origin: center;
+}
+
+/* Animated X when open */
+.nav-toggle.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.nav-toggle.open span:nth-child(2) { opacity: 0; width: 0; }
+.nav-toggle.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+/* Mobile dropdown menu */
+.mobile-nav-menu {
+    display: none;
+    position: fixed;
+    top: 80px; left: 50%;
+    transform: translateX(-50%);
+    width: calc(100% - 48px);
+    max-width: 1080px;
+    background: var(--nav-bg);
+    backdrop-filter: blur(28px) saturate(200%);
+    -webkit-backdrop-filter: blur(28px) saturate(200%);
+    border: 1px solid var(--nav-border);
+    border-radius: 20px;
+    padding: 8px 0;
+    z-index: 999;
+    box-shadow: 0 8px 32px var(--nav-shadow);
+    flex-direction: column;
+    overflow: hidden;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease, transform 0.25s ease;
+    transform: translateX(-50%) translateY(-8px);
+}
+.mobile-nav-menu.open {
+    opacity: 1; pointer-events: all;
+    transform: translateX(-50%) translateY(0);
+}
+.mobile-nav-menu a {
+    display: block;
+    padding: 14px 28px;
+    font-size: 14px; font-weight: 500;
+    color: var(--nav-text);
+    text-transform: uppercase; letter-spacing: 0.1em;
+    border-bottom: 1px solid var(--nav-border);
+    transition: background 0.15s, color 0.15s;
+}
+.mobile-nav-menu a:last-child { border-bottom: none; }
+.mobile-nav-menu a:hover { background: rgba(168,192,224,0.08); color: var(--accent); }
+.mobile-nav-menu a.active { color: var(--accent); }
+
+
+/* ==============================================
    MOBILE
    ============================================== */
 
-@media (max-width: 768px) {
+@media (max-width: 680px) {
+    /* Show hamburger, hide desktop links */
+    .nav-toggle { display: flex; }
+    .mobile-nav-menu { display: flex; }
+    .nav-links { display: none !important; }
+
+    /* Tighten the pill nav on small screens */
+    nav { padding: 10px 16px; width: calc(100% - 32px); }
+
+    /* Body spacing */
     .hero .wrap, .two-col, .cards, .products,
     .contact-row, .footer-row, .stats,
     .hero-btns { flex-direction: column; }
 
-    .hero-text h1 { font-size: 32px; }
-    .hero-img img { height: 260px; }
-    .hero         { padding: 60px 0; }
-    nav           { padding: 8px 18px; }
+    .hero-text h1 { font-size: 28px; }
+    .hero-img img { height: 220px; }
+    .hero         { padding: 50px 0; }
 
     .switcher-wrap { bottom: 16px; right: 50%; transform: translateX(50%); }
+}
+
+@media (min-width: 681px) and (max-width: 900px) {
+    .hero .wrap, .two-col, .contact-row { flex-direction: column; }
+    .hero-text h1 { font-size: 30px; }
+    nav { padding: 8px 20px; }
 }

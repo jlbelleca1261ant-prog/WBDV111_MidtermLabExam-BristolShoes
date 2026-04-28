@@ -235,7 +235,13 @@
     transition: all 0.18s ease;
 }
 .size-btn:hover:not(.unavail) { border-color: var(--heading); color: var(--heading); }
-.size-btn.selected { background: var(--btn-bg); border-color: var(--btn-bg); color: var(--btn-text); }
+.size-btn.selected {
+    background: #1B2A4A !important;
+    border-color: #1B2A4A !important;
+    color: #ffffff !important;
+    font-weight: 600;
+}
+
 .size-btn.unavail {
     opacity: 0.3; cursor: not-allowed;
     text-decoration: line-through;
