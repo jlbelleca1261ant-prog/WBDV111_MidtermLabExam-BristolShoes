@@ -6,15 +6,14 @@
 Bristol Shoes Marikina Static Website
 
 ## Student Information
-- Student Name: Jhonrey Belleca
+- Student Name: Jhonrey Belleca, Wesleigh Kane Regis, Dexter Pablo, Justine Mark Cayabyab
 - Course & Section: BSIT 1-Y2-1
 - School: Our Lady of Fatima University (OLFU) Antipolo
-- Submission: Midterm Laboratory Examination
 
 ---
 
 ## Short Project Description
-A clean, modern, and responsive static website for *Bristol Shoes Marikina Branch* — a proudly Filipino shoe store located in Marikina City, the Shoe Capital of the Philippines. The website was built using **HTML, CSS, and JavaScript** and is designed to be easy to navigate.
+A clean, modern, and responsive static website for *Bristol Shoes Marikina Branch* a proudly Filipino shoe store located in Marikina City, the Shoe Capital of the Philippines. The website was built using **HTML, CSS, and JavaScript** and is designed to be easy to navigate but don't expect too much.
 
 ---
 
