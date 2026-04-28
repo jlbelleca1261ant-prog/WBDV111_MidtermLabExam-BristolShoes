@@ -870,3 +870,146 @@ footer .logo-icon { background: #1B2A4A; color: white; }
     .hero-text h1 { font-size: 30px; }
     nav { padding: 8px 20px; }
 }
+
+
+/* ==============================================
+   BRIX — Floating Mascot Chat Widget
+   ============================================== */
+
+/* Container */
+#brix {
+    position: fixed;
+    bottom: 24px; right: 24px;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 12px;
+    font-family: inherit;
+}
+
+/* ── Trigger button ── */
+#brix-btn {
+    width: 62px; height: 62px;
+    border-radius: 50%;
+    border: 2.5px solid var(--accent);
+    background: var(--nav-bg);
+    padding: 0; cursor: pointer;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.35);
+    transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.3s;
+    animation: brixPulse 2.8s ease-in-out infinite;
+    position: relative;
+}
+#brix-btn img {
+    width: 100%; height: 100%;
+    object-fit: cover; display: block;
+}
+#brix-btn:hover {
+    transform: scale(1.12);
+    box-shadow: 0 6px 30px rgba(0,0,0,0.45);
+    animation-play-state: paused;
+}
+#brix-btn.on {
+    animation: none;
+    transform: scale(0.92) rotate(-8deg);
+}
+
+/* Notification dot */
+#brix-dot {
+    position: absolute; top: -3px; right: -3px;
+    width: 20px; height: 20px;
+    background: #e74c3c; color: #fff;
+    border-radius: 50%;
+    font-size: 10px; font-weight: 700; font-style: normal;
+    display: flex; align-items: center; justify-content: center;
+    border: 2px solid var(--bg);
+    animation: brixPop 0.4s 2.5s cubic-bezier(0.34,1.56,0.64,1) both;
+}
+
+@keyframes brixPulse {
+    0%,100% { box-shadow: 0 4px 20px rgba(0,0,0,0.35); }
+    50%     { box-shadow: 0 4px 20px rgba(0,0,0,0.35), 0 0 0 6px rgba(168,192,224,0.12); }
+}
+@keyframes brixPop {
+    from { transform: scale(0); } to { transform: scale(1); }
+}
+
+/* ── Chat panel ── */
+#brix-panel {
+    width: 290px;
+    background: var(--bg-card);
+    backdrop-filter: blur(16px) saturate(160%);
+    -webkit-backdrop-filter: blur(16px) saturate(160%);
+    border: 1.5px solid var(--border);
+    border-radius: 18px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+    overflow: hidden;
+    opacity: 0;
+    transform: translateY(14px) scale(0.9);
+    pointer-events: none;
+    transition: opacity 0.3s, transform 0.35s cubic-bezier(0.34,1.56,0.64,1);
+}
+#brix-panel.open {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    pointer-events: all;
+}
+
+/* Header */
+#brix-head {
+    display: flex; align-items: center; gap: 10px;
+    padding: 12px 14px;
+    background: var(--nav-bg);
+    border-bottom: 1px solid var(--border);
+}
+#brix-av {
+    width: 38px; height: 38px;
+    border-radius: 50%; object-fit: cover;
+    border: 2px solid var(--accent);
+}
+#brix-head div { flex: 1; display: flex; flex-direction: column; }
+#brix-head strong { font-size: 13px; color: var(--heading); }
+#brix-head span { font-size: 10px; color: var(--text-soft); }
+#brix-x {
+    background: none; border: none;
+    font-size: 20px; color: var(--text-soft);
+    cursor: pointer; padding: 2px 6px; line-height: 1;
+    transition: color 0.15s;
+}
+#brix-x:hover { color: var(--text); }
+
+/* Body */
+#brix-body { padding: 14px; }
+#brix-row { display: flex; align-items: flex-start; gap: 10px; }
+#brix-av2 {
+    width: 30px; height: 30px;
+    border-radius: 50%; object-fit: cover;
+    border: 1.5px solid var(--border); flex-shrink: 0;
+}
+#brix-txt {
+    flex: 1;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 14px 14px 14px 4px;
+    padding: 10px 12px;
+    font-size: 12.5px; color: var(--text);
+    line-height: 1.55; min-height: 36px;
+}
+#brix-nxt {
+    display: block;
+    margin: 8px 0 0 40px;
+    background: none; border: none;
+    font-size: 11px; font-weight: 600;
+    color: var(--accent); cursor: pointer;
+    letter-spacing: 0.03em;
+    transition: opacity 0.15s;
+}
+#brix-nxt:hover { opacity: 0.7; }
+
+/* ── Mobile ── */
+@media (max-width: 680px) {
+    #brix { bottom: 80px; right: 14px; }
+    #brix-btn { width: 52px; height: 52px; }
+    #brix-panel { width: calc(100vw - 36px); max-width: 290px; }
+}
