@@ -1,72 +1,114 @@
-# Bristol Shoes Website Project
+# Bristol Shoes Marikina - Website Project
+
+---
 
 ## Project Title
-**Bristol Shoes Marikina - Official Website**
+Bristol Shoes Marikina Static Website
 
 ## Student Information
-<!-- TODO: Replace [Your Name Here] with your actual name -->
-- **Student Name:** [Your Name Here]
-- **Course & Section:** BSIT 1-Y2-1
-- **School:** Our Lady of Fatima University (OLFU) - Antipolo Campus
+- Student Name: Jhonrey Belleca
+- Course & Section: BSIT 1-Y2-1
+- School: Our Lady of Fatima University (OLFU) Antipolo
+- Submission: Midterm Laboratory Examination
+
+---
 
 ## Short Project Description
-A static website for **Bristol Shoes & Shoe Factory - Marikina Branch**, a proudly Filipino shoe brand from Marikina City, the Shoe Capital of the Philippines. The website showcases their handcrafted leather shoes for men and women, their brand story, and store information.
+A clean, modern, and responsive static website for *Bristol Shoes Marikina Branch* — a proudly Filipino shoe store located in Marikina City, the Shoe Capital of the Philippines. The website was built using **HTML, CSS, and JavaScript** and is designed to be easy to navigate.
 
-Built using **HTML**, **CSS**, and **JavaScript** for the WBDV111 Midterm Laboratory Examination.
+---
+
+## Pages Included
+| Page | File | Description |
+|------|------|-------------|
+| Home | `index.html` | Hero banner, about preview, heritage strip, call-to-action |
+| About Us | `about.html` | Brand story and stats section |
+| Products | `products.html` | Men's and Women's shoe collections with cart system |
+| Contact | `contact.html` | Contact form, store info, Google Map |
+
+---
 
 ## Features Implemented
-
-### Website Structure (4 Pages)
-- **Home Page** (`index.html`) - Hero banner, about preview, heritage metrics strip, and CTA
-- **About Page** (`about.html`) - Brand story and stats
-- **Products Page** (`products.html`) - Men's & Women's collections with filter tabs, quick-view modal, cart system, and checkout
-- **Contact Page** (`contact.html`) - Validated contact form (via Formspree), store info, and Google Map
-
-### Design & Functionality
-- Responsive design (works on phones, tablets, and desktops)
-- Floating pill-style glassmorphism navbar
+- Navigation bar with active link indicator (floating glassmorphism pill)
 - 3-mode theme switcher (Light / Dark / Bristol brand theme)
-- Smooth scroll reveal animations using IntersectionObserver
-- Navy Blue + Gold color scheme with CSS variable system
-- Google Fonts (Playfair Display + Inter)
-- Semantic HTML5 tags (nav, section, footer, blockquote)
-- Form validation (Name, Email, PH Phone format, required fields)
-- Add to Cart system with localStorage persistence
+- Hero section with heading and call-to-action buttons
+- Responsive layout (mobile-friendly using CSS media queries)
+- Two-column layout sections (image + text)
+- Heritage metrics strip (brand stats)
+- Product cards with images, names, prices, and filter tabs (All / Men's / Women's)
 - Quick-view product modal with size selector and multiple image angles
+- Add to Cart system with cart sidebar (localStorage)
 - Checkout flow with 5 payment options (GCash, Maya, Card, Bank, COD)
+- Contact form with real-time validation (Name, Email, PH Phone format)
+- Contact form submission via Formspree (no backend needed)
+- Embedded Google Map (iframe)
+- Footer with quick links and contact info
+- Smooth scroll reveal animations (IntersectionObserver)
+- Consistent color scheme throughout (Navy Blue + White)
+- Google Fonts (Playfair Display + Inter)
+- Alt text on all images (accessibility)
+
+---
 
 ## Folder Structure
 ```
-WBDV Proj/
-├── index.html        ← Home page
-├── about.html        ← About Us page
-├── products.html     ← Products page
-├── contact.html      ← Contact page
+Bristol-Shoes-Website/
+│
+├── index.html          - Home Page
+├── about.html          - About Us Page
+├── products.html       - Products Page
+├── contact.html        - Contact Page
+│
 ├── css/
-│   ├── style.css     ← Main stylesheet (theme system)
-│   └── shop.css      ← Products page & cart styles
+│   ├── style.css       - All base styling and theme system
+│   └── shop.css        - Products page, cart, modal styles
+│
 ├── js/
-│   ├── theme.js      ← Theme switcher (Light/Dark/Bristol)
-│   ├── scroll.js     ← Scroll reveal animations
-│   ├── shop.js       ← Product catalog, cart, modal, checkout
-│   └── form.js       ← Contact form validation & Formspree
-├── images/
-│   └── ...           ← Local image assets
-└── README.md         ← This file
+│   ├── theme.js        - Theme switcher logic
+│   ├── scroll.js       - Scroll reveal animations
+│   ├── shop.js         - Product catalog, cart, checkout
+│   └── form.js         - Contact form validation & Formspree
+│
+└── images/
+    └── (contains all website images)
 ```
 
-## Screenshots
-<!-- TODO: Add screenshots of your website here -->
-<!-- Example: ![Home Page](screenshots/home.png) -->
+---
+
+## Color Palette
+| Color | Hex Code | Usage |
+|-------|----------|-------|
+| Navy Blue | `#1B2A4A` | Main color, buttons, headings, navbar |
+| Dark Navy | `#0f1e38` | Footer background, dark sections |
+| Light Blue | `#A8C0E0` | Accent text, highlights, active links |
+| White | `#FFFFFF` | Navbar, cards, white sections |
+| Light Gray | `#F4F6FA` | Body background |
+
+---
 
 ## Technologies Used
-- **HTML5** - Page structure and semantic markup
-- **CSS3** - Glassmorphism, CSS variables, Flexbox & Grid
-- **JavaScript** - Cart system, theme switcher, form validation, animations
-- **Google Fonts** - Playfair Display and Inter
-- **Formspree** - Contact form backend (no server needed)
-- **Bristol Shoes CDN** - Official product images
+- **HTML5** — Page structure and content
+- **CSS3** — Glassmorphism, CSS variables, Flexbox & Grid
+- **JavaScript** — Cart system, theme switcher, form validation, animations
+- **Google Fonts** — Playfair Display and Inter
+- **Formspree** — Contact form backend (no server needed)
+- **Bristol Shoes CDN** — Official product images
 
-## Live Demo
-<!-- TODO: Add your GitHub Pages URL here after deployment -->
-<!-- Example: https://username.github.io/WBDV111_MidtermLabExam-BristolShoes/ -->
+---
+
+## Screenshots
+![alt text](<Screenshot 2026-04-17 100705-1.png>)
+![alt text](<Screenshot 2026-04-17 100827.png>)
+![alt text](<Screenshot 2026-04-17 100854.png>)
+![alt text](<Screenshot 2026-04-17 100929.png>)
+![alt text](<Screenshot 2026-04-17 100950.png>)
+![alt text](<Screenshot 2026-04-17 101012.png>)
+![alt text](brave_screenshot.png)
+![alt text](<Screenshot 2026-04-17 101141.png>)
+![alt text](<Screenshot 2026-04-17 101209.png>)
+![alt text](<Screenshot 2026-04-17 101225.png>)
+![alt text](<Screenshot 2026-04-17 101245.png>)
+
+---
+
+*© 2026 Bristol Shoes & Shoe Factory. Website built for educational purposes.*
