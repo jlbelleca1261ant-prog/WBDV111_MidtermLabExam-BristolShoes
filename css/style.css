@@ -870,3 +870,113 @@ footer .logo-icon { background: #1B2A4A; color: white; }
     .hero-text h1 { font-size: 30px; }
     nav { padding: 8px 20px; }
 }
+
+
+/* ==============================================
+   MASCOT WIDGET — Brix the Cobbler
+   ============================================== */
+
+#mascot-widget {
+    position: fixed;
+    bottom: 24px;
+    left: 24px;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    pointer-events: none;
+}
+
+/* Bobbing idle animation */
+@keyframes mascot-bob {
+    0%, 100% { transform: translateY(0); }
+    50%       { transform: translateY(-8px); }
+}
+
+.mascot-img {
+    width: 80px;
+    cursor: pointer;
+    pointer-events: all;
+    animation: mascot-bob 2.8s ease-in-out infinite;
+    filter: drop-shadow(0 4px 12px rgba(0,0,0,0.25));
+    transition: transform 0.2s;
+    user-select: none;
+}
+.mascot-img:hover { transform: scale(1.08); animation-play-state: paused; }
+
+/* Speech bubble */
+.mascot-bubble {
+    position: relative;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 12px 14px 10px;
+    max-width: 220px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+    pointer-events: all;
+    /* hidden by default */
+    opacity: 0;
+    transform: translateY(6px) scale(0.95);
+    transition: opacity 0.25s ease, transform 0.25s ease;
+    pointer-events: none;
+}
+.mascot-bubble.visible {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    pointer-events: all;
+}
+
+/* Bubble tail pointing down-left */
+.mascot-bubble::after {
+    content: '';
+    position: absolute;
+    bottom: -9px; left: 22px;
+    width: 0; height: 0;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-top: 9px solid var(--bg-card);
+}
+.mascot-bubble::before {
+    content: '';
+    position: absolute;
+    bottom: -11px; left: 21px;
+    width: 0; height: 0;
+    border-left: 9px solid transparent;
+    border-right: 9px solid transparent;
+    border-top: 10px solid var(--border);
+}
+
+.mascot-msg {
+    font-size: 13px;
+    color: var(--text);
+    line-height: 1.5;
+    margin: 0 0 8px;
+    min-height: 38px;
+}
+
+.mascot-close {
+    position: absolute;
+    top: 6px; right: 8px;
+    background: none; border: none;
+    font-size: 16px; line-height: 1;
+    color: var(--text-soft);
+    cursor: pointer;
+    padding: 2px 4px;
+}
+.mascot-close:hover { color: var(--text); }
+
+.mascot-next {
+    background: none; border: none;
+    font-size: 11px; font-weight: 600;
+    color: var(--accent);
+    cursor: pointer; padding: 0;
+    letter-spacing: 0.03em;
+}
+.mascot-next:hover { opacity: 0.75; }
+
+@media (max-width: 480px) {
+    #mascot-widget { bottom: 80px; left: 16px; }
+    .mascot-img { width: 64px; }
+    .mascot-bubble { max-width: 185px; }
+}
