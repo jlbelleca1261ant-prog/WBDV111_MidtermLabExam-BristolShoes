@@ -559,10 +559,7 @@ nav .wrap {
 
 .field-error { display: block; font-size: 12px; color: #e74c3c; margin-top: 4px; min-height: 16px; }
 
-.pw-strength-wrap  { display: flex; align-items: center; gap: 10px; margin-top: 6px; }
-.pw-strength-track { flex: 1; height: 5px; background: var(--border); border-radius: 99px; overflow: hidden; }
-.pw-strength-bar   { height: 100%; width: 0%; border-radius: 99px; transition: width 0.3s ease, background 0.3s ease; }
-.pw-strength-text  { font-size: 12px; font-weight: 500; min-width: 44px; }
+
 
 .info-item { display: flex; gap: 14px; margin-bottom: 20px; align-items: flex-start; }
 .info-icon {
