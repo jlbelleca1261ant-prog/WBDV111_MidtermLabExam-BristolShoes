@@ -873,81 +873,182 @@ footer .logo-icon { background: #1B2A4A; color: white; }
 
 
 /* ==============================================
-   BRIX MASCOT — Professional Animation System
-   High-detail PNG + CSS @keyframes choreography
+   BRIX CHAT WIDGET
+   Professional fixed-position mascot chat panel.
+   Character sits inside branded circular containers
+   so there are zero transparency/background issues.
    ============================================== */
 
-/* ── Character image (shared) ── */
-.bx-character {
-    width: 100px; height: auto;
-    pointer-events: all;
+.brix-widget {
+    position: fixed;
+    bottom: 24px; right: 24px;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 12px;
+}
+
+/* ── Floating trigger button ── */
+.brix-trigger {
+    position: relative;
+    width: 64px; height: 64px;
+    border-radius: 50%;
+    border: 3px solid var(--accent);
+    background: var(--nav-bg);
     cursor: pointer;
-    user-select: none;
-    filter: drop-shadow(0 6px 16px rgba(0,0,0,0.35));
-    transition: filter 0.2s;
+    overflow: hidden;
+    box-shadow: 0 6px 28px rgba(0,0,0,0.35);
+    transition: transform 0.25s cubic-bezier(0.34,1.56,0.64,1),
+                box-shadow 0.25s ease;
+    animation: brixPulse 3s ease-in-out infinite;
+    padding: 0;
 }
-.bx-character:hover {
-    filter: drop-shadow(0 6px 16px rgba(0,0,0,0.35)) brightness(1.06);
+.brix-trigger:hover {
+    transform: scale(1.1);
+    box-shadow: 0 8px 36px rgba(0,0,0,0.45);
+    animation-play-state: paused;
+}
+.brix-trigger.active {
+    animation: none;
+    transform: scale(0.95);
 }
 
-/* ── Chat Bubble (shared) ── */
-.bx-bubble {
+.brix-trigger-img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+/* Notification badge */
+.brix-trigger-badge {
     position: absolute;
-    bottom: calc(100% + 12px);
-    left: 50%;
-    transform: translateX(-50%) translateY(8px) scale(0.92);
-    min-width: 210px; max-width: 250px;
+    top: -4px; right: -4px;
+    width: 22px; height: 22px;
+    background: #e74c3c;
+    color: white;
+    border-radius: 50%;
+    font-size: 11px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    border: 2px solid var(--bg);
+    animation: brixBadgePop 0.4s 3s cubic-bezier(0.34,1.56,0.64,1) both;
+}
+
+@keyframes brixPulse {
+    0%, 100% { box-shadow: 0 6px 28px rgba(0,0,0,0.35); }
+    50%      { box-shadow: 0 6px 28px rgba(0,0,0,0.35), 0 0 0 8px rgba(168,192,224,0.15); }
+}
+@keyframes brixBadgePop {
+    from { transform: scale(0); }
+    to   { transform: scale(1); }
+}
+
+/* ── Chat panel ── */
+.brix-panel {
+    width: 300px;
     background: var(--bg-card);
-    backdrop-filter: blur(14px) saturate(180%);
-    -webkit-backdrop-filter: blur(14px) saturate(180%);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
     border: 1.5px solid var(--border);
-    border-radius: 18px;
-    padding: 14px 34px 12px 16px;
-    box-shadow: 0 8px 32px rgba(0,0,0,0.22);
+    border-radius: 20px;
+    box-shadow: 0 12px 48px rgba(0,0,0,0.3);
+    overflow: hidden;
+    /* Hidden by default */
     opacity: 0;
+    transform: translateY(16px) scale(0.92);
     pointer-events: none;
-    transition: opacity 0.35s ease, transform 0.35s cubic-bezier(0.34,1.56,0.64,1);
-    z-index: 60;
+    transition: opacity 0.3s ease, transform 0.35s cubic-bezier(0.34,1.56,0.64,1);
 }
-.bx-bubble.show {
+.brix-panel.open {
     opacity: 1;
+    transform: translateY(0) scale(1);
     pointer-events: all;
-    transform: translateX(-50%) translateY(0) scale(1);
-}
-/* Tail arrow */
-.bx-bubble::after {
-    content: '';
-    position: absolute;
-    bottom: -10px; left: 50%; transform: translateX(-50%);
-    border: 10px solid transparent;
-    border-top-color: var(--bg-card);
-}
-.bx-bubble::before {
-    content: '';
-    position: absolute;
-    bottom: -13px; left: 50%; transform: translateX(-50%);
-    border: 11px solid transparent;
-    border-top-color: var(--border);
 }
 
-.bx-msg {
+/* Panel header */
+.brix-panel-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 16px;
+    background: var(--nav-bg);
+    border-bottom: 1px solid var(--border);
+}
+.brix-panel-avatar {
+    width: 42px; height: 42px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 2px solid var(--accent);
+    flex-shrink: 0;
+    background: var(--bg);
+}
+.brix-panel-avatar img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+}
+.brix-panel-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+.brix-panel-info strong {
+    font-size: 14px;
+    color: var(--heading);
+    letter-spacing: 0.02em;
+}
+.brix-panel-info span {
+    font-size: 11px;
+    color: var(--text-soft);
+    letter-spacing: 0.02em;
+}
+.brix-panel-close {
+    background: none; border: none;
+    font-size: 22px; line-height: 1;
+    color: var(--text-soft);
+    cursor: pointer; padding: 4px;
+    transition: color 0.15s;
+}
+.brix-panel-close:hover { color: var(--text); }
+
+/* Panel body */
+.brix-panel-body {
+    padding: 16px;
+}
+
+.brix-chat-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+}
+.brix-chat-avatar {
+    width: 34px; height: 34px;
+    border-radius: 50%;
+    overflow: hidden;
+    flex-shrink: 0;
+    background: var(--bg);
+    border: 1.5px solid var(--border);
+}
+.brix-chat-avatar img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+}
+
+.brix-chat-msg {
+    flex: 1;
+    background: var(--bg-alt);
+    border: 1px solid var(--border);
+    border-radius: 14px 14px 14px 4px;
+    padding: 10px 14px;
     font-size: 13px;
     color: var(--text);
     line-height: 1.55;
-    margin: 0 0 8px;
-    min-height: 34px;
-    font-weight: 400;
+    min-height: 40px;
 }
-.bx-close {
-    position: absolute; top: 7px; right: 10px;
-    background: none; border: none;
-    font-size: 18px; line-height: 1;
-    color: var(--text-soft);
-    cursor: pointer; padding: 2px 4px;
-    transition: color 0.15s;
-}
-.bx-close:hover { color: var(--text); }
-.bx-next {
+
+.brix-next {
+    display: block;
+    margin-top: 10px;
+    margin-left: 44px;
     background: none; border: none;
     font-size: 11px; font-weight: 600;
     color: var(--accent);
@@ -955,197 +1056,12 @@ footer .logo-icon { background: #1B2A4A; color: white; }
     letter-spacing: 0.04em;
     transition: opacity 0.15s;
 }
-.bx-next:hover { opacity: 0.7; }
+.brix-next:hover { opacity: 0.7; }
 
 
-/* ═══════════════════════════════════════════════
-   HOME — Shoelace Drop → Walk → Idle at edge
-   ═══════════════════════════════════════════════ */
-
-.bx-home-container {
-    position: absolute;
-    top: -120px;
-    right: -10px;
-    z-index: 50;
-    display: inline-flex;
-    flex-direction: column;
-    align-items: center;
-    pointer-events: none;
-    animation:
-        bxHomeDrop 1.2s 0.5s cubic-bezier(0.22,1,0.36,1) forwards,
-        bxHomeWalk 2s 2s steps(10) forwards;
-}
-
-/* The shoelace / rope */
-.bx-shoelace {
-    position: absolute;
-    top: -200px; left: 50%;
-    transform: translateX(-50%);
-    width: 3px; height: 0;
-    background: linear-gradient(to bottom, rgba(201,168,76,0.2), #C9A84C 60%, #8B6914);
-    border-radius: 2px;
-    animation: bxLaceDrop 0.8s 0.3s ease-out forwards,
-               bxLaceRetract 0.5s 2s ease-in forwards;
-}
-
-@keyframes bxLaceDrop {
-    from { height: 0; }
-    to   { height: 220px; }
-}
-@keyframes bxLaceRetract {
-    from { height: 220px; opacity: 1; }
-    to   { height: 0; opacity: 0; }
-}
-
-@keyframes bxHomeDrop {
-    from { top: -120px; opacity: 0; }
-    to   { top: -85px;  opacity: 1; }
-}
-
-@keyframes bxHomeWalk {
-    from { right: -10px; }
-    to   { right: calc(100% - 60px); }
-}
-
-/* Idle breathing after arriving */
-.bx-home-container.arrived .bx-character {
-    animation: bxBreathe 3s ease-in-out infinite;
-}
-
-.bx-home-container .bx-bubble {
-    bottom: calc(100% + 8px);
-    left: auto; right: -40px;
-    transform: translateX(0) translateY(8px) scale(0.92);
-}
-.bx-home-container .bx-bubble.show {
-    transform: translateX(0) translateY(0) scale(1);
-}
-.bx-home-container .bx-bubble::after {
-    left: auto; right: 30px; transform: none;
-}
-.bx-home-container .bx-bubble::before {
-    left: auto; right: 29px; transform: none;
-}
-
-
-/* ═══════════════════════════════════════════════
-   ABOUT — Peek up from behind heading text
-   ═══════════════════════════════════════════════ */
-
-.bx-about-container {
-    position: absolute;
-    bottom: -10px; right: -60px;
-    z-index: -1;     /* Behind the text */
-    display: inline-block;
-    transform: translateY(100%);
-    transition: transform 0.8s cubic-bezier(0.34,1.56,0.64,1);
-    pointer-events: none;
-}
-.bx-about-container .bx-character {
-    width: 80px;
-}
-.bx-about-container.peek {
-    transform: translateY(25%);
-    pointer-events: all;
-}
-.bx-about-container.peek .bx-character {
-    animation: bxBreathe 3s ease-in-out infinite;
-}
-
-.bx-about-container .bx-bubble {
-    bottom: calc(100% + 8px);
-    left: auto; right: -30px;
-    transform: translateX(0) translateY(8px) scale(0.92);
-}
-.bx-about-container .bx-bubble.show {
-    transform: translateX(0) translateY(0) scale(1);
-}
-.bx-about-container .bx-bubble::after {
-    left: auto; right: 26px; transform: none;
-}
-.bx-about-container .bx-bubble::before {
-    left: auto; right: 25px; transform: none;
-}
-
-
-/* ═══════════════════════════════════════════════
-   PRODUCTS — Slide in from right edge
-   ═══════════════════════════════════════════════ */
-
-.bx-products-container {
-    position: fixed;
-    bottom: 24px; right: -140px;
-    z-index: 9999;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    transition: right 0.8s cubic-bezier(0.34,1.56,0.64,1);
-}
-.bx-products-container.arrived { right: 28px; }
-.bx-products-container.arrived .bx-character {
-    animation: bxBreathe 3s ease-in-out infinite;
-}
-
-.bx-products-container .bx-bubble {
-    right: 0; left: auto;
-    transform: translateX(0) translateY(8px) scale(0.92);
-}
-.bx-products-container .bx-bubble.show {
-    transform: translateX(0) translateY(0) scale(1);
-}
-.bx-products-container .bx-bubble::after {
-    left: auto; right: 30px; transform: none;
-}
-.bx-products-container .bx-bubble::before {
-    left: auto; right: 29px; transform: none;
-}
-
-
-/* ═══════════════════════════════════════════════
-   CONTACT — Pop up from bottom
-   ═══════════════════════════════════════════════ */
-
-.bx-contact-container {
-    position: fixed;
-    bottom: -160px; left: 28px;
-    z-index: 9999;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    transition: bottom 0.8s cubic-bezier(0.34,1.56,0.64,1);
-}
-.bx-contact-container.arrived { bottom: 24px; }
-.bx-contact-container.arrived .bx-character {
-    animation: bxBreathe 3s ease-in-out infinite;
-}
-
-
-/* ═══════════════════════════════════════════════
-   SHARED — Idle breathing animation
-   ═══════════════════════════════════════════════ */
-
-@keyframes bxBreathe {
-    0%, 100% { transform: translateY(0) rotate(0deg); }
-    30%      { transform: translateY(-6px) rotate(-1.5deg); }
-    70%      { transform: translateY(-3px) rotate(1deg); }
-}
-
-
-/* ═══════════════════════════════════════════════
-   MOBILE ADJUSTMENTS
-   ═══════════════════════════════════════════════ */
-
+/* ── Mobile ── */
 @media (max-width: 680px) {
-    .bx-character { width: 72px; }
-    .bx-bubble { min-width: 180px; max-width: 210px; font-size: 12px; }
-
-    .bx-home-container { right: 0; }
-    .bx-about-container { right: -30px; }
-    .bx-about-container .bx-character { width: 60px; }
-
-    .bx-products-container.arrived { right: 16px; bottom: 80px; }
-    .bx-contact-container.arrived  { left: 16px; bottom: 80px; }
+    .brix-widget { bottom: 80px; right: 16px; }
+    .brix-trigger { width: 54px; height: 54px; }
+    .brix-panel { width: calc(100vw - 40px); max-width: 300px; }
 }
-
-
-

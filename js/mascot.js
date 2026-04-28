@@ -1,28 +1,10 @@
 // ============================================================
-//  Bristol Shoes — Brix the Cobbler  (Professional Mascot Engine)
-//  Uses high-detail PNGs + CSS @keyframes for movement.
-//  Bubbles revealed via JS animationend listeners.
+//  Bristol Shoes — Brix Chat Widget
+//  Clean fixed-position mascot widget. Character sits inside
+//  a branded circle (no transparency issues). Simple & polished.
 // ============================================================
 (function () {
     'use strict';
-
-    // ── Per-page images & messages ──
-    var POSES = {
-        home:     'images/brix-wave.png',
-        about:    'images/brix-peek.png',
-        products: 'images/brix-think.png',
-        contact:  'images/brix-friendly.png'
-    };
-    var MSGS = {
-        home:     ['Hey there! 👟 Welcome to Bristol Shoes — where every step tells a story!',
-                   'These shoes? Handcrafted in Marikina. They outlast trends AND your ex. 😏'],
-        about:    ['Psst… curious about us? Great taste already! 🇵🇭',
-                   'Every Bristol shoe is born right here in Marikina. Pretty cool, right?'],
-        products: ['Hmm… shopping for new kicks? You came to the right place! 👀',
-                   "Don't overthink it — your feet deserve the upgrade. Trust me. 😄"],
-        contact:  ['Need help? Drop us a message — we don\'t bite! 😊',
-                   'We reply in 1–2 business days. Busy cobblers, you know! 🔨']
-    };
 
     var path = window.location.pathname;
     function getKey() {
@@ -31,175 +13,121 @@
         if (path.includes('contact'))  return 'contact';
         return 'home';
     }
-    var KEY  = getKey();
-    var msgs = MSGS[KEY];
-    var pose = POSES[KEY];
+
+    var KEY = getKey();
+
+    var MSGS = {
+        home:     ['Hey there! 👟 Welcome to Bristol Shoes — where every step tells a story!',
+                   'These shoes? Handcrafted in Marikina. They outlast trends AND your ex. 😏'],
+        about:    ['Psst… curious about us? Great taste already! 🇵🇭',
+                   'Every Bristol shoe is born right here in Marikina. Pretty cool, right?'],
+        products: ['Hmm… shopping for new kicks huh? You came to the right place! 👀',
+                   "Don't overthink it — your feet deserve the upgrade. Trust me. 😄"],
+        contact:  ['Need help? Drop us a message — we don\'t bite! 😊',
+                   'We reply in 1–2 business days. Busy cobblers! 🔨']
+    };
+
+    var POSES = {
+        home:     'images/brix-wave.png',
+        about:    'images/brix-peek.png',
+        products: 'images/brix-think.png',
+        contact:  'images/brix-friendly.png'
+    };
+
+    var msgs   = MSGS[KEY];
     var msgIdx = 0;
+    var isOpen = false;
+
+    // ── Build the widget ──
+    var widget = document.createElement('div');
+    widget.id = 'brix-widget';
+    widget.className = 'brix-widget';
+    widget.innerHTML =
+        // Chat panel (hidden initially)
+        '<div class="brix-panel" id="brix-panel">'
+        +   '<div class="brix-panel-header">'
+        +       '<div class="brix-panel-avatar">'
+        +           '<img src="' + POSES[KEY] + '" alt="Brix">'
+        +       '</div>'
+        +       '<div class="brix-panel-info">'
+        +           '<strong>Brix</strong>'
+        +           '<span>Bristol Shoes Assistant</span>'
+        +       '</div>'
+        +       '<button class="brix-panel-close" id="brix-panel-close" aria-label="Close">×</button>'
+        +   '</div>'
+        +   '<div class="brix-panel-body">'
+        +       '<div class="brix-chat-row">'
+        +           '<div class="brix-chat-avatar"><img src="' + POSES[KEY] + '" alt="Brix"></div>'
+        +           '<div class="brix-chat-msg" id="brix-chat-msg"></div>'
+        +       '</div>'
+        +       (msgs.length > 1 ? '<button class="brix-next" id="brix-next">Next tip →</button>' : '')
+        +   '</div>'
+        + '</div>'
+        // Floating trigger button (always visible)
+        + '<button class="brix-trigger" id="brix-trigger" aria-label="Chat with Brix">'
+        +   '<img src="' + POSES[KEY] + '" alt="Brix" class="brix-trigger-img">'
+        +   '<span class="brix-trigger-badge">1</span>'
+        + '</button>';
+
+    document.body.appendChild(widget);
+
+    var trigger  = document.getElementById('brix-trigger');
+    var panel    = document.getElementById('brix-panel');
+    var closeBtn = document.getElementById('brix-panel-close');
+    var nextBtn  = document.getElementById('brix-next');
+    var msgEl    = document.getElementById('brix-chat-msg');
+    var badge    = widget.querySelector('.brix-trigger-badge');
 
     // ── Typing effect ──
-    function typeText(el, text, cb) {
-        el.textContent = '';
+    function typeText(text) {
+        msgEl.textContent = '';
         var i = 0;
         var t = setInterval(function () {
-            el.textContent += text[i++];
-            if (i >= text.length) { clearInterval(t); if (cb) cb(); }
-        }, 25);
+            msgEl.textContent += text[i++];
+            if (i >= text.length) clearInterval(t);
+        }, 22);
     }
 
-    // ── Show / hide bubble ──
-    function showBubble(container) {
-        var bubble = container.querySelector('.bx-bubble');
-        var msgEl  = container.querySelector('.bx-msg');
-        if (!bubble || !msgEl) return;
-        bubble.classList.add('show');
-        typeText(msgEl, msgs[msgIdx]);
-    }
-    function hideBubble(container) {
-        var bubble = container.querySelector('.bx-bubble');
-        if (bubble) bubble.classList.remove('show');
+    function openPanel() {
+        isOpen = true;
+        panel.classList.add('open');
+        trigger.classList.add('active');
+        badge.style.display = 'none';
+        typeText(msgs[msgIdx]);
     }
 
-    // ── Build bubble HTML ──
-    function bubbleHTML() {
-        return '<div class="bx-bubble">'
-            + '<button class="bx-close" aria-label="Close">×</button>'
-            + '<p class="bx-msg"></p>'
-            + (msgs.length > 1 ? '<button class="bx-next">Next tip →</button>' : '')
-            + '</div>';
+    function closePanel() {
+        isOpen = false;
+        panel.classList.remove('open');
+        trigger.classList.remove('active');
     }
 
-    // ── Bind bubble events ──
-    function bindBubble(container) {
-        var close = container.querySelector('.bx-close');
-        var next  = container.querySelector('.bx-next');
-        var img   = container.querySelector('.bx-character');
+    // ── Events ──
+    trigger.addEventListener('click', function () {
+        isOpen ? closePanel() : openPanel();
+    });
 
-        if (close) close.addEventListener('click', function (e) {
-            e.stopPropagation(); hideBubble(container);
-        });
-        if (next) next.addEventListener('click', function (e) {
+    closeBtn.addEventListener('click', function (e) {
+        e.stopPropagation();
+        closePanel();
+    });
+
+    if (nextBtn) {
+        nextBtn.addEventListener('click', function (e) {
             e.stopPropagation();
             msgIdx = (msgIdx + 1) % msgs.length;
-            typeText(container.querySelector('.bx-msg'), msgs[msgIdx]);
-        });
-        if (img) img.addEventListener('click', function () {
-            var bubble = container.querySelector('.bx-bubble');
-            if (bubble.classList.contains('show')) hideBubble(container);
-            else showBubble(container);
+            typeText(msgs[msgIdx]);
         });
     }
 
+    // Close on outside click
+    document.addEventListener('click', function (e) {
+        if (isOpen && !widget.contains(e.target)) closePanel();
+    });
 
-    // ════════════════════════════════════════════════════════
-    //  HOME — Drop on shoelace → land on h1 → walk → chat
-    // ════════════════════════════════════════════════════════
-    function initHome() {
-        var heroText = document.querySelector('.hero-text');
-        var h1 = document.querySelector('.hero-text h1');
-        if (!heroText || !h1) return;
-
-        // Make h1 the positioning anchor
-        h1.style.position = 'relative';
-        h1.style.display  = 'inline-block';
-
-        // Inject Brix container inside h1 so he's anchored to the text
-        h1.insertAdjacentHTML('beforeend',
-            '<span id="bx-home" class="bx-home-container">'
-            +   '<span class="bx-shoelace"></span>'
-            +   '<img class="bx-character" src="' + pose + '" alt="Brix the Cobbler" draggable="false">'
-            +   bubbleHTML()
-            + '</span>'
-        );
-
-        var container = document.getElementById('bx-home');
-        bindBubble(container);
-
-        // Chat appears after the CSS animation ends
-        container.addEventListener('animationend', function (e) {
-            if (e.animationName === 'bxHomeWalk') {
-                container.classList.add('arrived');
-                setTimeout(function () { showBubble(container); }, 400);
-            }
-        });
-    }
-
-
-    // ════════════════════════════════════════════════════════
-    //  ABOUT — Peek up from behind "Our Story" heading
-    // ════════════════════════════════════════════════════════
-    function initAbout() {
-        var header = document.querySelector('.page-header');
-        var h1     = document.querySelector('.page-header h1');
-        if (!header || !h1) return;
-
-        header.style.position = 'relative';
-        header.style.overflow = 'visible';
-
-        // Find the <em> or last word
-        var anchor = h1.querySelector('em') || h1;
-
-        anchor.style.position = 'relative';
-        anchor.style.display  = 'inline-block';
-
-        anchor.insertAdjacentHTML('beforeend',
-            '<span id="bx-about" class="bx-about-container">'
-            +   '<img class="bx-character" src="' + pose + '" alt="Brix peeking" draggable="false">'
-            +   bubbleHTML()
-            + '</span>'
-        );
-
-        var container = document.getElementById('bx-about');
-        bindBubble(container);
-
-        // Trigger peek after 0.8s
-        setTimeout(function () { container.classList.add('peek'); }, 800);
-        // Show bubble after peek finishes
-        setTimeout(function () { showBubble(container); }, 2400);
-    }
-
-
-    // ════════════════════════════════════════════════════════
-    //  PRODUCTS — Slide in from right edge
-    // ════════════════════════════════════════════════════════
-    function initProducts() {
-        var el = document.createElement('div');
-        el.id = 'bx-products';
-        el.className = 'bx-products-container';
-        el.innerHTML = '<img class="bx-character" src="' + pose + '" alt="Brix thinking" draggable="false">'
-                     + bubbleHTML();
-        document.body.appendChild(el);
-
-        bindBubble(el);
-
-        // Slide in after 0.6s
-        setTimeout(function () { el.classList.add('arrived'); }, 600);
-        // Chat after arrival
-        setTimeout(function () { showBubble(el); }, 2000);
-    }
-
-
-    // ════════════════════════════════════════════════════════
-    //  CONTACT — Pop up from bottom
-    // ════════════════════════════════════════════════════════
-    function initContact() {
-        var el = document.createElement('div');
-        el.id = 'bx-contact';
-        el.className = 'bx-contact-container';
-        el.innerHTML = '<img class="bx-character" src="' + pose + '" alt="Brix waving" draggable="false">'
-                     + bubbleHTML();
-        document.body.appendChild(el);
-
-        bindBubble(el);
-
-        setTimeout(function () { el.classList.add('arrived'); }, 700);
-        setTimeout(function () { showBubble(el); }, 2200);
-    }
-
-
-    // ── Route ──
-    if      (KEY === 'home')     initHome();
-    else if (KEY === 'about')    initAbout();
-    else if (KEY === 'products') initProducts();
-    else                         initContact();
+    // ── Auto-open after 2.5s on first visit ──
+    setTimeout(function () {
+        if (!isOpen) openPanel();
+    }, 2500);
 
 })();
