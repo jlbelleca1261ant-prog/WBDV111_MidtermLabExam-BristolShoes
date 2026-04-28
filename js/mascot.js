@@ -1,16 +1,16 @@
 /* =============================================================
    Brix the Cobbler — Bristol Shoes Mascot
-   Fixed-position floating assistant with per-page poses,
-   smooth CSS animations, and humorous chitchat.
+   Physics-based animated character with per-page poses.
    ============================================================= */
 (function () {
     'use strict';
 
-    /* ── Page detection ── */
-    var p = location.pathname;
-    var page = p.includes('about')    ? 'about'
-             : p.includes('product')  ? 'products'
-             : p.includes('contact')  ? 'contact'
+    /* ── Page detection (works on GitHub Pages + local) ── */
+    var href = location.href.toLowerCase();
+    var page = href.includes('about')    ? 'about'
+             : href.includes('products') ? 'products'
+             : href.includes('product')  ? 'products'
+             : href.includes('contact')  ? 'contact'
              : 'home';
 
     /* ── Per-page config ── */
@@ -56,19 +56,20 @@
                 (c.msgs.length > 1 ? '<button id="brix-nxt">Next tip →</button>' : '') +
             '</div>' +
         '</div>' +
-        /* Trigger */
+        /* Trigger — the "alive" character */
         '<button id="brix-btn" aria-label="Chat with Brix">' +
-            '<img src="' + c.img + '" alt="Brix">' +
+            '<img src="' + c.img + '" alt="Brix" id="brix-char">' +
             '<i id="brix-dot">1</i>' +
         '</button>';
 
     document.body.appendChild(w);
 
     /* ── Refs ── */
-    var panel = document.getElementById('brix-panel');
-    var btn   = document.getElementById('brix-btn');
-    var txt   = document.getElementById('brix-txt');
-    var dot   = document.getElementById('brix-dot');
+    var panel  = document.getElementById('brix-panel');
+    var btn    = document.getElementById('brix-btn');
+    var chr    = document.getElementById('brix-char');
+    var txt    = document.getElementById('brix-txt');
+    var dot    = document.getElementById('brix-dot');
 
     /* ── Typing effect ── */
     function type(s) {
@@ -92,20 +93,59 @@
         btn.classList.remove('on');
     }
 
-    btn.addEventListener('click', function () { open ? hide() : show(); });
+    /* ── Spring physics on click ── */
+    function springBounce() {
+        chr.style.transition = 'transform 0.15s ease-out';
+        chr.style.transform  = 'scale(0.75) rotate(-12deg)';
+        setTimeout(function () {
+            chr.style.transition = 'transform 0.5s cubic-bezier(0.34,1.56,0.64,1)';
+            chr.style.transform  = 'scale(1) rotate(0deg)';
+        }, 150);
+    }
+
+    btn.addEventListener('click', function () {
+        springBounce();
+        setTimeout(function () { open ? hide() : show(); }, 200);
+    });
+
     document.getElementById('brix-x').addEventListener('click', function (e) {
         e.stopPropagation(); hide();
     });
+
     var nxt = document.getElementById('brix-nxt');
     if (nxt) nxt.addEventListener('click', function (e) {
         e.stopPropagation();
         idx = (idx + 1) % c.msgs.length;
         type(c.msgs[idx]);
     });
+
     document.addEventListener('click', function (e) {
         if (open && !w.contains(e.target)) hide();
     });
 
-    /* Auto-open after 2s */
-    setTimeout(function () { if (!open) show(); }, 2000);
+    /* ── Entrance animation: slide in from off-screen ── */
+    w.style.transform = 'translateX(-120px)';
+    w.style.opacity   = '0';
+    setTimeout(function () {
+        w.style.transition = 'transform 0.7s cubic-bezier(0.34,1.56,0.64,1), opacity 0.5s ease';
+        w.style.transform  = 'translateX(0)';
+        w.style.opacity    = '1';
+    }, 500);
+
+    /* ── Auto-open after 2.5s ── */
+    setTimeout(function () { if (!open) show(); }, 2500);
+
+    /* ── React to scroll: gentle parallax tilt ── */
+    var lastY = 0;
+    window.addEventListener('scroll', function () {
+        var y = window.scrollY;
+        var delta = Math.max(-8, Math.min(8, (y - lastY) * 0.6));
+        chr.style.transform = 'rotate(' + delta + 'deg)';
+        lastY = y;
+        clearTimeout(chr._reset);
+        chr._reset = setTimeout(function () {
+            chr.style.transition = 'transform 0.6s cubic-bezier(0.34,1.56,0.64,1)';
+            chr.style.transform  = 'rotate(0deg)';
+        }, 150);
+    });
 })();
