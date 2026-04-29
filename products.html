@@ -163,27 +163,27 @@
             <button class="modal-close" onclick="closeCheckout()">&times;</button>
             <h2 class="checkout-title">Checkout</h2>
 
-            <div class="checkout-body">
+            <form id="checkout-form" class="checkout-body" onsubmit="event.preventDefault(); placeOrder();">
                 <!-- Contact Info -->
                 <div class="checkout-section">
                     <h4>Contact Information</h4>
                     <div class="checkout-row">
-                        <input type="text" placeholder="First Name" class="checkout-input">
-                        <input type="text" placeholder="Last Name" class="checkout-input">
+                        <input type="text" placeholder="First Name" class="checkout-input" required>
+                        <input type="text" placeholder="Last Name" class="checkout-input" required>
                     </div>
-                    <input type="email" placeholder="Email Address" class="checkout-input full">
-                    <input type="tel" placeholder="Phone Number (e.g. 09XX XXX XXXX)" class="checkout-input full">
+                    <input type="email" placeholder="Email Address" class="checkout-input full" required>
+                    <input type="tel" placeholder="Phone Number (e.g. 09XX XXX XXXX)" class="checkout-input full" required pattern="^(\+639|09)\d{9}$">
                 </div>
 
                 <!-- Delivery -->
                 <div class="checkout-section">
                     <h4>Delivery Address</h4>
-                    <input type="text" placeholder="Street Address" class="checkout-input full">
+                    <input type="text" placeholder="Street Address" class="checkout-input full" required>
                     <div class="checkout-row">
-                        <input type="text" placeholder="City" class="checkout-input">
-                        <input type="text" placeholder="Province" class="checkout-input">
+                        <input type="text" placeholder="City" class="checkout-input" required>
+                        <input type="text" placeholder="Province" class="checkout-input" required>
                     </div>
-                    <input type="text" placeholder="ZIP Code" class="checkout-input full">
+                    <input type="text" placeholder="ZIP Code" class="checkout-input full" required>
                 </div>
 
                 <!-- Payment -->
@@ -237,8 +237,8 @@
                     <div class="summary-row summary-total"><span>Total</span><span id="checkout-total">₱0</span></div>
                 </div>
 
-                <button class="place-order-btn" onclick="placeOrder()">Place Order</button>
-            </div>
+                <button type="submit" class="place-order-btn">Place Order</button>
+            </form>
         </div>
     </div>
 

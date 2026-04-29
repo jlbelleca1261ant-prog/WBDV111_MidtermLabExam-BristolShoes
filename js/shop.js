@@ -454,6 +454,7 @@ function openCheckout() {
     var totalEl = document.getElementById('checkout-total');
     if (subtotalEl) subtotalEl.textContent = formatPrice(sub);
     if (totalEl) totalEl.textContent = formatPrice(sub + 150);
+    closeCartSidebar();
     document.getElementById('checkout-modal').classList.add('open');
 }
 function closeCheckout() {
@@ -468,8 +469,8 @@ function placeOrder() {
     if (!selected) { alert('Please select a payment method.'); return; }
     saveCart([]);
     updateCartBadge();
+    document.getElementById('checkout-form').reset();
     closeCheckout();
-    closeCartSidebar();
     // Show success toast
     var toast = document.getElementById('order-toast');
     toast.classList.add('show');
