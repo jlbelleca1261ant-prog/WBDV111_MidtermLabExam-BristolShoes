@@ -72,11 +72,14 @@
     var dot    = document.getElementById('brix-dot');
 
     /* ── Typing effect ── */
+    var typeTimer;
     function type(s) {
+        clearInterval(typeTimer);
         txt.textContent = '';
-        var i = 0, t = setInterval(function () {
+        var i = 0;
+        typeTimer = setInterval(function () {
             txt.textContent += s[i++];
-            if (i >= s.length) clearInterval(t);
+            if (i >= s.length) clearInterval(typeTimer);
         }, 20);
     }
 

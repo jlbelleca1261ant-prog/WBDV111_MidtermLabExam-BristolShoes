@@ -887,6 +887,7 @@ footer .logo-icon { background: #1B2A4A; color: white; }
     align-items: flex-start;
     gap: 12px;
     font-family: inherit;
+    pointer-events: none; /* Let clicks pass through the container wrapper */
 }
 
 /* ── Character trigger — the "alive" button ── */
@@ -896,6 +897,7 @@ footer .logo-icon { background: #1B2A4A; color: white; }
     border: 3px solid var(--accent);
     background: var(--nav-bg);
     padding: 0; cursor: pointer;
+    pointer-events: auto; /* Re-enable clicks for the button itself */
     overflow: hidden;
     position: relative;
     /* Physics: idle floating + breathing */
@@ -978,7 +980,7 @@ footer .logo-icon { background: #1B2A4A; color: white; }
 #brix-panel.open {
     opacity: 1;
     transform: translateY(0) scale(1);
-    pointer-events: all;
+    pointer-events: auto; /* standard value for HTML elements */
 }
 
 /* Panel header */
