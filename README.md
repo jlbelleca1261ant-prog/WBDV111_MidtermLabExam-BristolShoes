@@ -97,7 +97,10 @@ Bristol-Shoes-Website/
 
 ## Screenshots
 <img width="1599" height="736" alt="S1" src="https://github.com/user-attachments/assets/31d31d52-6663-457d-8492-c512ad3b59a1" />
-
+<img width="1599" height="738" alt="S2" src="https://github.com/user-attachments/assets/a2f85124-2106-4568-bcb7-4136e86d94be" />
+<img width="1599" height="733" alt="S3" src="https://github.com/user-attachments/assets/fe8a50b2-41e5-48f0-87c6-a24b28e2e1b3" />
+<img width="1599" height="740" alt="S4" src="https://github.com/user-attachments/assets/90b1d50a-8bee-4bb6-81a4-4f49e2ff244b" />
+<img width="1599" height="739" alt="S5" src="https://github.com/user-attachments/assets/9323a3dd-3984-4e2d-bd9e-3690715a2ac0" />
 
 ---
 
