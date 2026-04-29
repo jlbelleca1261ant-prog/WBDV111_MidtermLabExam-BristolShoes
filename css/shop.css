@@ -82,7 +82,7 @@
     border: 1px solid var(--border);
     border-radius: 14px; overflow: hidden;
     cursor: pointer;
-    transition: box-shadow 0.25s, transform 0.25s, background-color 0.3s ease, border-color 0.3s ease;
+    transition: box-shadow 0.25s, transform 0.25s, background-color 0.3s ease;
     flex: unset; /* override flex: 1 from base */
 }
 .product-grid .product:hover {
@@ -137,15 +137,16 @@
 .modal-overlay {
     position: fixed; inset: 0;
     background: rgba(0,0,0,0.55);
-    backdrop-filter: blur(4px);
     z-index: 10000;
     display: flex; align-items: center; justify-content: center;
     padding: 16px;
     opacity: 0; pointer-events: none;
-    transition: opacity 0.25s ease;
+    visibility: hidden;
+    transition: opacity 0.25s ease, visibility 0.25s;
 }
 .modal-overlay.open {
     opacity: 1; pointer-events: all;
+    visibility: visible;
 }
 
 .modal-container {
@@ -272,9 +273,13 @@
     background: rgba(0,0,0,0.45);
     z-index: 10001;
     opacity: 0; pointer-events: none;
-    transition: opacity 0.3s;
+    visibility: hidden;
+    transition: opacity 0.3s, visibility 0.3s;
 }
-.cart-overlay.open { opacity: 1; pointer-events: all; }
+.cart-overlay.open { 
+    opacity: 1; pointer-events: all; 
+    visibility: visible;
+}
 
 .cart-sidebar {
     position: fixed; top: 0; right: -420px;
