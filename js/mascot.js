@@ -16,20 +16,24 @@
     /* ── Per-page config ── */
     var cfg = {
         home:     { img: 'images/brix_waving.png',   msgs: [
-            'Hey there! 👟 Welcome to Bristol Shoes!',
-            'Handcrafted in Marikina — they outlast trends AND your ex. 😏'
+            'Psst! Yeah, you. Stop scrolling for a sec. 🤫',
+            'Our shoes are handcrafted to outlast trends... and probably your last relationship. 💅',
+            'Unless you actually enjoy blisters, you should probably buy a pair. Just saying. 🙄'
         ]},
         about:    { img: 'images/brix_friendly.png',  msgs: [
-            'Curious about us? Great taste already! 🇵🇭',
-            'Every Bristol shoe is born right here in the Shoe Capital!'
+            "Ah, the 'Our Story' page. You must be really bored right now. ☕",
+            "Spoiler alert: We make really good shoes in Marikina. That's basically the whole story. 😅",
+            "Fun fact: I'm not a real cobbler. I'm just a drawing trapped in your browser. Send help. 🆘"
         ]},
         products: { img: 'images/brix_thinking.png',  msgs: [
-            'Hmm… shopping for new kicks? Smart move! 👀',
-            "Don't overthink it — your feet deserve the upgrade. 😄"
+            'I see you eyeing that leather... do not fight the urge. Add to cart. 👀',
+            "Think of it as an investment! At least, that's what you can tell your wallet. 💸",
+            "Pro tip: Buying new shoes burns calories. Trust me, I'm a cartoon. 👟"
         ]},
         contact:  { img: 'images/brix_friendly.png',  msgs: [
-            "Need help? Drop us a message — we don't bite! 😊",
-            'We reply in 1–2 days. Busy cobblers, you know! 🔨'
+            "Got a question? Drop a message! We don't bite... unless you ask us to sell Crocs. 🐊",
+            "We usually reply in 1–2 days. I'd do it faster, but my hands are literally painted on. 🤷‍♂️",
+            "Just don't spam us, okay? My pixelated anxiety can't handle it. 😰"
         ]}
     };
 
