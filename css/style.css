@@ -90,6 +90,12 @@
 html { scroll-behavior: smooth; box-sizing: border-box; }
 *, *::before, *::after {
     margin: 0; padding: 0; box-sizing: inherit;
+}
+
+/* Theme transition only on elements that need it (prevents lag on complex pages) */
+body, nav, .product, .cart-sidebar, .modal-container, .checkout-container, 
+.form-group input, .form-group textarea, .pay-option, .cart-item,
+.page-header, .section-white, .section-navy, footer {
     transition:
         background-color 0.3s ease,
         color 0.25s ease,
