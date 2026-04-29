@@ -96,16 +96,8 @@ Bristol-Shoes-Website/
 ---
 
 ## Screenshots
-![alt text](<Screenshot 2026-04-17 100705-1.png>)
-![alt text](<Screenshot 2026-04-17 100827.png>)
-![alt text](<Screenshot 2026-04-17 100854.png>)
-![alt text](<Screenshot 2026-04-17 100929.png>)
-![alt text](<Screenshot 2026-04-17 100950.png>)
-![alt text](<Screenshot 2026-04-17 101012.png>)
-![alt text](brave_screenshot.png)
-![alt text](<Screenshot 2026-04-17 101141.png>)
-![alt text](<Screenshot 2026-04-17 101209.png>)
-![alt text](<Screenshot 2026-04-17 101225.png>)
+<img width="1599" height="736" alt="S1" src="https://github.com/user-attachments/assets/31d31d52-6663-457d-8492-c512ad3b59a1" />
+
 ![alt text](<Screenshot 2026-04-17 101245.png>)
 
 ---
