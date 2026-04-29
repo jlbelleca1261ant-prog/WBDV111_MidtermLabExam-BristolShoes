@@ -98,7 +98,6 @@ Bristol-Shoes-Website/
 ## Screenshots
 <img width="1599" height="736" alt="S1" src="https://github.com/user-attachments/assets/31d31d52-6663-457d-8492-c512ad3b59a1" />
 
-![alt text](<Screenshot 2026-04-17 101245.png>)
 
 ---
 
