@@ -8,8 +8,7 @@
 
     // ── 1. Mark all animatable elements with .reveal class ──
     const targets = [
-        '.card', '.product', '.stat',
-        '.two-col .col', '.contact-row > div',
+        '.product', '.two-col .col', '.contact-row > div',
         '.page-header', '.section-navy .wrap > *',
         '.hero-text', '.hero-img', '.info-item', '.map'
     ];
@@ -40,7 +39,7 @@
 
 
     // ── 3. Stagger delay for card groups ──
-    ['cards', 'products', 'stats'].forEach(function (cls) {
+    ['products'].forEach(function (cls) {
         document.querySelectorAll('.' + cls).forEach(function (group) {
             Array.from(group.children).forEach(function (child, index) {
                 child.style.transitionDelay = (index * 0.1) + 's';
