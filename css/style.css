@@ -859,7 +859,7 @@ footer .logo-icon { background: #1B2A4A; color: white; }
     .hero-btns { flex-direction: column; }
 
     .hero-text h1 { font-size: 28px; }
-    .hero-img img { height: 220px; }
+    .hero-img img { height: 340px; }
     .hero         { padding: 50px 0; }
 
     .switcher-wrap { bottom: 16px; right: 50%; transform: translateX(50%); }
