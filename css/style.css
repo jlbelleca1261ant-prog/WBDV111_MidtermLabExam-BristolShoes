@@ -60,8 +60,8 @@
 
 [data-theme="bristol"] {
     --bg:           #162040;
-    --bg-card:      rgba(255,255,255,0.07);
-    --bg-alt:       rgba(255,255,255,0.04);
+    --bg-card:      rgba(22,32,64,0.92);
+    --bg-alt:       rgba(22,32,64,0.95);
     --text:         #ffffff;
     --text-muted:   #A8C0E0;
     --text-soft:    rgba(168,192,224,0.65);
