@@ -350,6 +350,7 @@ function openModal(id) {
         + '<div class="modal-price">' + originalLine + '<span class="modal-price-main">' + formatPrice(p.price) + '</span></div>'
         + saveLine
         + '<p class="modal-desc">' + p.desc + '</p>'
+        + '<div class="modal-sizes"><p class="modal-size-label">SIZE <a href="https://bristolshoes.ph/pages/size-guide" target="_blank" class="size-guide-link">Size Guide ↗</a></p>'
         + '<div class="size-grid">' + sizeBtns + '</div></div>'
         + '<p id="modal-size-err" class="modal-size-err"></p>'
         + '<button class="modal-atc-btn" onclick="modalAddToCart()">🛒 Add to Cart</button>'
