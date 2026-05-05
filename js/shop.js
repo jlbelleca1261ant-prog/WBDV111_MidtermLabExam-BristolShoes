@@ -354,7 +354,6 @@ function openModal(id) {
         + '<div class="size-grid">' + sizeBtns + '</div></div>'
         + '<p id="modal-size-err" class="modal-size-err"></p>'
         + '<button class="modal-atc-btn" onclick="modalAddToCart()">🛒 Add to Cart</button>'
-        + '<a href="https://bristolshoes.ph/collections/all" target="_blank" class="modal-link">View on Official Site ↗</a>'
         + '</div>';
 
     // Attach size selector events
