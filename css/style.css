@@ -97,11 +97,6 @@ footer {
     transition: background-color 0.3s ease;
 }
 
-@keyframes pageIn {
-    from { opacity: 0; transform: translateY(8px); }
-    to   { opacity: 1; transform: translateY(0); }
-}
-
 body {
     font-family: 'Inter', sans-serif;
     background: var(--bg);
@@ -110,7 +105,6 @@ body {
     padding-top: 88px;
     /* GPU-accelerated scrolling */
     -webkit-overflow-scrolling: touch;
-    animation: pageIn 0.35s ease both;
 }
 
 img {
@@ -952,74 +946,6 @@ footer .logo-icon {
     }
 }
 
-/* ==============================================
-   FOOTER TRUST LINKS
-   ============================================== */
-
-.footer-bottom {
-    flex-direction: column;
-    gap: 8px;
-    text-align: center;
-}
-
-.footer-trust-links {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    flex-wrap: wrap;
-    justify-content: center;
-}
-
-.footer-trust-links a {
-    font-size: 11px;
-    color: rgba(255, 255, 255, 0.45);
-    text-decoration: none;
-    transition: color 0.2s;
-    letter-spacing: 0.04em;
-}
-
-.footer-trust-links a:hover {
-    color: rgba(255, 255, 255, 0.85);
-}
-
-.footer-trust-links span {
-    color: rgba(255, 255, 255, 0.2);
-    font-size: 11px;
-}
-
-/* ==============================================
-   ADD TO CART TOAST
-   ============================================== */
-
-.atc-toast {
-    position: fixed;
-    top: -80px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: #1B2A4A;
-    color: #ffffff;
-    padding: 12px 22px;
-    border-radius: 999px;
-    font-size: 13px;
-    font-weight: 500;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
-    z-index: 99999;
-    transition: top 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-    white-space: nowrap;
-    pointer-events: none;
-}
-
-[data-theme="dark"] .atc-toast {
-    background: #ffffff;
-    color: #1B2A4A;
-}
-
-.atc-toast.show {
-    top: 100px;
-}
 
 @media (min-width: 681px) and (max-width: 900px) {
 
