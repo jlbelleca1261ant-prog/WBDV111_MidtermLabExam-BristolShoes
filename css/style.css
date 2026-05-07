@@ -31,7 +31,6 @@
     --input-border: #D8E0EC;
     --info-icon: #1B2A4A;
     --footer-bg: #111D35;
-    --logo-bg: #1B2A4A;
     --card-shadow: rgba(27, 42, 74, 0.08);
 }
 
@@ -55,7 +54,6 @@
     --input-border: #30363d;
     --info-icon: #1B2A4A;
     --footer-bg: #010409;
-    --logo-bg: #ffffff;
     --card-shadow: rgba(0, 0, 0, 0.25);
 }
 
@@ -189,9 +187,9 @@ nav .wrap {
 .logo-icon {
     width: 40px;
     height: 40px;
-    background: var(--logo-bg);
+    background: #1B2A4A;
     border-radius: 50%;
-    color: var(--btn-text);
+    color: #ffffff;
     font-size: 18px;
     font-weight: 700;
     display: flex;
