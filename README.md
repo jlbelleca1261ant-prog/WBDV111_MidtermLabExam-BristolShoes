@@ -13,7 +13,7 @@ Bristol Shoes Marikina Static Website
 ---
 
 ## Short Project Description
-A clean, modern, and responsive static website for *Bristol Shoes Marikina Branch* a proudly Filipino shoe store located in Marikina City, the Shoe Capital of the Philippines. The website was built using **HTML, CSS, and JavaScript** and is designed to be easy to navigate but don't expect too much.
+This website was built using **HTML, CSS, and JavaScript** and is designed to be easy to navigate but don't expect too much as were just amateur yet and we touch grass often.
 
 ---
 
@@ -37,12 +37,12 @@ A clean, modern, and responsive static website for *Bristol Shoes Marikina Branc
 - Product cards with images, names, prices, and filter tabs (All / Men's / Women's)
 - Quick-view product modal with size selector and multiple image angles
 - Add to Cart system with cart sidebar (localStorage)
-- Checkout flow with 5 payment options (GCash, Maya, Card, Bank, COD)
+- Checkout flow with 5 payment options (GCash, Maya, Card, Bank, COD) This is just placeholders sir since we dont have a backend.
 - Contact form with real-time validation (Name, Email, PH Phone format)
 - Contact form submission via Formspree (no backend needed)
 - Embedded Google Map (iframe)
 - Footer with quick links and contact info
-- Smooth scroll reveal animations (IntersectionObserver)
+- Smooth scroll reveal animations (IntersectionObserver) (i vibecoded this since i dont have much knowledge about how will i implement the logic of transitions and animations).
 - Consistent color scheme throughout (Navy Blue + White)
 - Google Fonts (Playfair Display + Inter)
 - Alt text on all images (accessibility)
@@ -86,12 +86,12 @@ Bristol-Shoes-Website/
 ---
 
 ## Technologies Used
-- **HTML5** — Page structure and content
-- **CSS3** — Glassmorphism, CSS variables, Flexbox & Grid
-- **JavaScript** — Cart system, theme switcher, form validation, animations
-- **Google Fonts** — Playfair Display and Inter
-- **Formspree** — Contact form backend (no server needed)
-- **Bristol Shoes CDN** — Official product images
+- **HTML5** For Page structure and content
+- **CSS3** For Glassmorphism, CSS variables, Flexbox & Grid
+- **JavaScript** For Cart system, theme switcher, form validation, animations
+- **Google Fonts** For Playfair Display and Inter
+- **Formspree** For Contact form backend (no server needed)
+- **Bristol Shoes** For Official product images
 
 ---
 
