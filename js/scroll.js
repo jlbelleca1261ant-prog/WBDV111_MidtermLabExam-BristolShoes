@@ -48,7 +48,7 @@
     });
 
 
-    // ── 4. Navbar scroll effect ──
+    // 4. Navbar scroll effect 
     var nav = document.querySelector('nav');
     if (nav) {
         window.addEventListener('scroll', function () {
@@ -61,7 +61,7 @@
     }
 
 
-    // ── 5. Hamburger menu toggle ──
+    // 5. Hamburger menu toggle function
     var toggle   = document.getElementById('nav-toggle');
     var mobileMenu = document.getElementById('mobile-nav-menu');
 

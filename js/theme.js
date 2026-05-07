@@ -10,7 +10,7 @@
     const STORAGE_KEY = 'bristol-theme';
 
     // All valid theme values
-    const THEMES = ['light', 'dark', 'bristol'];
+    const THEMES = ['light', 'dark'];
 
     // ── Apply theme to <html> element ──
     // We set a data attribute: <html data-theme="dark">

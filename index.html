@@ -41,7 +41,7 @@
         </div>
     </nav>
 
-    <!-- Mobile Nav Dropdown -->
+    <!-- Mobile Nav Dropdown Burger -->
     <div class="mobile-nav-menu" id="mobile-nav-menu">
         <a href="index.html" class="active">Home</a>
         <a href="about.html">About</a>
@@ -123,23 +123,19 @@
             </div>
             <div class="footer-bottom">
                 <p>&copy; 2026 Bristol Shoes &amp; Shoe Factory. All rights reserved.</p>
+                <div class="switcher-wrap">
+                    <span class="switcher-label">Theme</span>
+                    <fieldset class="switcher">
+                        <legend class="switcher__legend"></legend>
+                        <input class="switcher__input" type="radio" name="theme" value="light" id="theme-light" checked>
+                        <label class="switcher__option" for="theme-light" title="Light mode">☀</label>
+                        <input class="switcher__input" type="radio" name="theme" value="dark" id="theme-dark">
+                        <label class="switcher__option" for="theme-dark" title="Dark mode">◐</label>
+                    </fieldset>
+                </div>
             </div>
         </div>
     </footer>
-
-    <!-- Liquid Glass Theme Switcher -->
-    <div class="switcher-wrap">
-        <span class="switcher-label"></span>
-        <fieldset class="switcher">
-            <legend class="switcher__legend"></legend>
-            <input class="switcher__input" type="radio" name="theme" value="light" id="theme-light" checked>
-            <label class="switcher__option" for="theme-light" title="Light mode">☀</label>
-            <input class="switcher__input" type="radio" name="theme" value="dark" id="theme-dark">
-            <label class="switcher__option" for="theme-dark" title="Dark mode">◐</label>
-            <input class="switcher__input" type="radio" name="theme" value="bristol" id="theme-bristol">
-            <label class="switcher__option" for="theme-bristol" title="Bristol mode">✦</label>
-        </fieldset>
-    </div>
 
     <script src="js/theme.js"></script>
     <script src="js/scroll.js"></script>

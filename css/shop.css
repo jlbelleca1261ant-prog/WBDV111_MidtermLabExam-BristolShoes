@@ -368,6 +368,43 @@
 .cart-continue-btn:hover { border-color: var(--text-muted); color: var(--text); }
 
 
+/* ── Size Guide Modal ───────────────────────────────────────── */
+.size-modal-overlay { align-items: center; }
+.size-container {
+    max-width: 500px;
+    margin: 20px auto;
+}
+.size-body { padding: 16px 28px 28px; }
+.size-body p {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-bottom: 20px;
+    line-height: 1.5;
+}
+.size-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 24px;
+}
+.size-table th, .size-table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+    color: var(--heading);
+}
+.size-table th {
+    font-weight: 600;
+    color: var(--text-soft);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-size: 11px;
+}
+.size-table tbody tr:hover {
+    background: rgba(255, 255, 255, 0.03);
+}
+
+
 /* ── Checkout Modal ─────────────────────────────────────────── */
 .checkout-modal-overlay { align-items: flex-start; }
 .checkout-container {
