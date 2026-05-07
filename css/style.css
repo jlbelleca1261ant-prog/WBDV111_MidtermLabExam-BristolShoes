@@ -261,6 +261,13 @@ nav .wrap {
     transform: scale(1.05);
 }
 
+/* Theme Icon Swapping */
+[data-theme="light"] .sun-icon { display: none; }
+[data-theme="light"] .moon-icon { display: block; }
+
+[data-theme="dark"] .sun-icon { display: block; }
+[data-theme="dark"] .moon-icon { display: none; }
+
 
 /* ==============================================
    HERO
