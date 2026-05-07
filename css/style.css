@@ -242,6 +242,25 @@ nav .wrap {
     border-bottom-color: var(--accent);
 }
 
+.theme-nav-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    padding: 6px;
+    border-radius: 8px;
+    color: var(--nav-text);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s, transform 0.2s;
+}
+
+.theme-nav-btn:hover {
+    background: rgba(168, 192, 224, 0.1);
+    transform: scale(1.05);
+}
+
 
 /* ==============================================
    HERO
@@ -752,141 +771,6 @@ footer .logo-icon {
     transform: translateY(0);
 }
 
-
-/* ==============================================
-   LIQUID GLASS THEME SWITCHER
-   Fixed bottom-right. Works on all 4 pages.
-   ============================================== */
-
-.switcher-wrap {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.switcher-label {
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: rgba(255, 255, 255, 0.45);
-}
-
-/* Reset fieldset browser defaults */
-.switcher {
-    border: none;
-    margin: 0;
-    padding: 0;
-    min-width: 0;
-    /* Layout */
-    position: relative;
-    display: flex;
-    align-items: center;
-    gap: 3px;
-    padding: 5px;
-    border-radius: 999px;
-
-    /* ── Light mode: dark navy so icons are ALWAYS readable on white pages ── */
-    background: rgba(27, 42, 74, 0.88);
-
-    /* 2. Blur everything behind it */
-    backdrop-filter: blur(40px) saturate(200%);
-    -webkit-backdrop-filter: blur(40px) saturate(200%);
-
-    /* 3. Glass rim — subtle top-edge highlight */
-    border: 1px solid rgba(255, 255, 255, 0.18) !important;
-
-    /* 4. Depth shadows */
-    box-shadow:
-        0 2px 6px rgba(0, 0, 0, 0.15),
-        0 8px 24px rgba(27, 42, 74, 0.35),
-        0 24px 56px rgba(27, 42, 74, 0.18),
-        inset 0 1.5px 0 rgba(255, 255, 255, 0.18),
-        inset 0 -1px 0 rgba(0, 0, 0, 0.25);
-
-    cursor: pointer;
-}
-
-/* Specular sheen — top-half highlight on the glass pill */
-.switcher::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    background: linear-gradient(170deg,
-            rgba(255, 255, 255, 0.12) 0%,
-            rgba(255, 255, 255, 0.02) 40%,
-            rgba(255, 255, 255, 0.00) 100%);
-    pointer-events: none;
-    z-index: 0;
-}
-
-/* Hide real radio */
-.switcher__input {
-    display: none;
-}
-
-.switcher__legend {
-    display: none;
-}
-
-/* Clickable icon button */
-.switcher__option {
-    position: relative;
-    z-index: 2;
-    /* above the ::after sheen */
-    width: 38px;
-    height: 38px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    font-size: 18px;
-    color: rgba(255, 255, 255, 0.9);
-    transition:
-        background 0.22s ease,
-        box-shadow 0.22s ease,
-        transform 0.22s cubic-bezier(0.175, 0.885, 0.32, 1.8);
-    user-select: none;
-}
-
-.switcher__option:hover {
-    transform: scale(1.16);
-}
-
-/* Checked / active circle */
-.switcher__input:checked+.switcher__option {
-    background: rgba(255, 255, 255, 0.28);
-    color: white;
-    box-shadow:
-        0 2px 10px rgba(0, 0, 0, 0.20),
-        inset 0 1px 0 rgba(255, 255, 255, 0.65);
-    transform: scale(1.1);
-}
-
-/* ── Dark mode overrides ── */
-[data-theme="dark"] .switcher {
-    background: rgba(20, 26, 40, 0.60) !important;
-    border-color: rgba(255, 255, 255, 0.10) !important;
-    box-shadow:
-        0 8px 32px rgba(0, 0, 0, 0.55),
-        inset 0 1.5px 0 rgba(255, 255, 255, 0.10),
-        inset 0 -1px 0 rgba(0, 0, 0, 0.25);
-}
-
-[data-theme="dark"] .switcher::after {
-    background: linear-gradient(170deg, rgba(255, 255, 255, 0.07) 0%, transparent 45%);
-}
-
-[data-theme="dark"] .switcher__option {
-    color: rgba(200, 215, 230, 0.85);
-}
-
-[data-theme="dark"] .switcher__input:checked+.switcher__option {
-    background: rgba(255, 255, 255, 0.14);
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.15);
-}
 
 
 

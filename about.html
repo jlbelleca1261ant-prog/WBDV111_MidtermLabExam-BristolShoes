@@ -29,15 +29,18 @@
                     <span class="logo-sub">Marikina Branch</span>
                 </div>
             </a>
-            <ul class="navigation-links">
+            <ul class="nav-links">
                 <li><a href="index.html">Home</a></li>
                 <li><a href="about.html" class="active">About</a></li>
                 <li><a href="products.html">Products</a></li>
                 <li><a href="contact.html">Contact</a></li>
             </ul>
-            <button class="nav-toggle" id="nav-toggle" aria-label="Menu" aria-expanded="false">
-                <span></span><span></span><span></span>
-            </button>
+            <div style="display: flex; align-items: center; gap: 8px;">
+                <button id="theme-toggle" class="theme-nav-btn" aria-label="Toggle Theme">🌓</button>
+                <button class="nav-toggle" id="nav-toggle" aria-label="Menu" aria-expanded="false">
+                    <span></span><span></span><span></span>
+                </button>
+            </div>
         </div>
     </nav>
 
@@ -128,16 +131,6 @@
             </div>
             <div class="footer-bottom">
                 <p>&copy; 2026 Bristol Shoes &amp; Shoe Factory. All rights reserved.</p>
-                <div class="switcher-wrap">
-                    <span class="switcher-label">Theme</span>
-                    <fieldset class="switcher">
-                        <legend class="switcher__legend"></legend>
-                        <input class="switcher__input" type="radio" name="theme" value="light" id="theme-light" checked>
-                        <label class="switcher__option" for="theme-light" title="Light mode">☀</label>
-                        <input class="switcher__input" type="radio" name="theme" value="dark" id="theme-dark">
-                        <label class="switcher__option" for="theme-dark" title="Dark mode">◐</label>
-                    </fieldset>
-                </div>
             </div>
         </div>
     </footer>
