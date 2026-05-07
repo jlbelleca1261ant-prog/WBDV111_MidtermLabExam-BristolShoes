@@ -354,6 +354,7 @@ function openModal(id) {
         + '<div class="size-grid">' + sizeBtns + '</div></div>'
         + '<p id="modal-size-err" class="modal-size-err"></p>'
         + '<button class="modal-atc-btn" onclick="modalAddToCart()">🛒 Add to Cart</button>'
+        + '<button class="modal-buy-btn" onclick="modalBuyNow()">⚡ Buy Now</button>'
         + '</div>';
 
     // Attach size selector events
@@ -389,6 +390,16 @@ function modalAddToCart() {
     addToCart(currentProduct.id, selectedSize);
     closeModal();
     openCartSidebar();
+}
+
+function modalBuyNow() {
+    if (!selectedSize) {
+        document.getElementById('modal-size-err').textContent = '⚠ Please select a size first.';
+        return;
+    }
+    addToCart(currentProduct.id, selectedSize);
+    closeModal();
+    openCheckout();
 }
 
 
@@ -448,16 +459,18 @@ function openCheckout() {
             return '<div class="summary-row"><span>' + i.name + ' (x' + i.qty + ') sz:' + i.size + '</span><span>' + formatPrice(i.price * i.qty) + '</span></div>';
         }).join('');
     }
-    var sub = cartT();
+    var sub = cartTotal();
     var subtotalEl = document.getElementById('checkout-subtotal');
     var totalEl = document.getElementById('checkout-total');
     if (subtotalEl) subtotalEl.textContent = formatPrice(sub);
     if (totalEl) totalEl.textContent = formatPrice(sub + 150);
     closeCartSidebar();
     document.getElementById('checkout-modal').classList.add('open');
+    document.body.style.overflow = 'hidden';
 }
-function close() {
+function closeCheckout() {
     document.getElementById('checkout-modal').classList.remove('open');
+    document.body.style.overflow = '';
 }
 function selectPayment(el) {
     document.querySelectorAll('.pay-option').forEach(function (o) { o.classList.remove('selected'); });
@@ -466,15 +479,17 @@ function selectPayment(el) {
 
 function placeOrder() {
     var selected = document.querySelector('.pay-option.selected');
-    if (!selected) { alert('please select a payment method.'); return; }
+    if (!selected) { alert('Please select a payment method.'); return; }
     saveCart([]);
     updateCartBadge();
     document.getElementById('checkout-form').reset();
-    closeC
+    closeCheckout();
     // Show success toast
     var toast = document.getElementById('order-toast');
-    toast.classList.add('show');
-    setTimeout(function () { toast.classList.remove('show'); }, 3500);
+    if (toast) {
+        toast.classList.add('show');
+        setTimeout(function () { toast.classList.remove('show'); }, 3500);
+    }
 }
 
 
