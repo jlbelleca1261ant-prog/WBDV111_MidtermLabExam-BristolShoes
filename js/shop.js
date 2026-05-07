@@ -229,6 +229,7 @@ function addToCart(productId, size) {
     saveCart(cart);
     updateCartBadge();
     animateCartIcon();
+    showAtcToast(product.name);
 }
 function removeFromCart(key) {
     var cart = getCart().filter(function (i) { return i.key !== key; });
@@ -493,6 +494,20 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // Cart overlay click to close
-    var overlay = ocument.gdetElementById('cart-overlay');
+    var overlay = document.getElementById('cart-overlay');
     if (overlay) overlay.addEventListener('click', closeCartSidebar);
 });
+
+// ── Add to Cart Toast ──────────────────────────────────────────
+var _atcTimer = null;
+function showAtcToast(productName) {
+    var toast = document.getElementById('atc-toast');
+    var msg   = document.getElementById('atc-toast-msg');
+    if (!toast) return;
+    if (msg) msg.textContent = '\u201c' + productName + '\u201d added to cart!';
+    clearTimeout(_atcTimer);
+    toast.classList.add('show');
+    _atcTimer = setTimeout(function () {
+        toast.classList.remove('show');
+    }, 2800);
+}

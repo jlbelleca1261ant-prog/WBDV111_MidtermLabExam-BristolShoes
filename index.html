@@ -14,6 +14,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Bristol Shoes Marikina - Handcrafted leather shoes for men and women.">
     <title>Bristol Shoes Marikina - Home</title>
+    <link rel="icon" type="image/svg+xml" href="images/favicon.svg">
     <link rel="stylesheet" href="css/style.css">
 </head>
 
@@ -129,13 +130,28 @@
             </div>
             <div class="footer-bottom">
                 <p>&copy; 2026 Bristol Shoes &amp; Shoe Factory. All rights reserved.</p>
+                <div class="footer-trust-links">
+                    <a href="#" onclick="openInfoModal('shipping')">Shipping Policy</a>
+                    <span>·</span>
+                    <a href="#" onclick="openInfoModal('returns')">Return Policy</a>
+                    <span>·</span>
+                    <a href="#" onclick="openInfoModal('faq')">FAQ</a>
+                </div>
             </div>
         </div>
     </footer>
 
+    <!-- Info Modal (Shipping / Returns / FAQ) -->
+    <div id="info-modal-overlay" class="modal-overlay" onclick="if(event.target===this)closeInfoModal()">
+        <div class="modal-container" style="max-width:540px;">
+            <button class="modal-close" onclick="closeInfoModal()">&times;</button>
+            <div id="info-modal-body" style="padding:32px 28px;"></div>
+        </div>
+    </div>
+
     <script src="js/theme.js"></script>
     <script src="js/scroll.js"></script>
-
+    <script src="js/info-modal.js"></script>
 
 </body>
 

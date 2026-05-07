@@ -14,6 +14,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Contact Bristol Shoes Marikina - visit our store or send us a message.">
     <title>Contact Us - Bristol Shoes Marikina</title>
+    <link rel="icon" type="image/svg+xml" href="images/favicon.svg">
     <link rel="stylesheet" href="css/style.css">
 </head>
 
@@ -195,9 +196,24 @@
             </div>
             <div class="footer-bottom">
                 <p>&copy; 2026 Bristol Shoes &amp; Shoe Factory. All rights reserved.</p>
+                <div class="footer-trust-links">
+                    <a href="#" onclick="openInfoModal('shipping')">Shipping Policy</a>
+                    <span>·</span>
+                    <a href="#" onclick="openInfoModal('returns')">Return Policy</a>
+                    <span>·</span>
+                    <a href="#" onclick="openInfoModal('faq')">FAQ</a>
+                </div>
             </div>
         </div>
     </footer>
+
+    <!-- Info Modal (Shipping / Returns / FAQ) -->
+    <div id="info-modal-overlay" class="modal-overlay" onclick="if(event.target===this)closeInfoModal()">
+        <div class="modal-container" style="max-width:540px;">
+            <button class="modal-close" onclick="closeInfoModal()">&times;</button>
+            <div id="info-modal-body" style="padding:32px 28px;"></div>
+        </div>
+    </div>
 
     <!-- Form script the purpose of this is to validate our input-->
     <script src="js/form.js"></script>
@@ -205,8 +221,7 @@
     <!-- Dito naman yung theme and scroll animation script naten-->
     <script src="js/theme.js"></script>
     <script src="js/scroll.js"></script>
-
-
+    <script src="js/info-modal.js"></script>
 
 </body>
 
