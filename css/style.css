@@ -331,13 +331,6 @@ nav .wrap {
     object-position: center 57%;
     border-radius: 16px;
     box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
-    animation: floatShoe 6s ease-in-out infinite;
-}
-
-@keyframes floatShoe {
-    0% { transform: translateY(0px); }
-    50% { transform: translateY(-12px); }
-    100% { transform: translateY(0px); }
 }
 
 .hero-text small {
