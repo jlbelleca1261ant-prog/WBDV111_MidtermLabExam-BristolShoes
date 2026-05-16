@@ -271,10 +271,29 @@ function animateCartIcon() {
 // RENDER PRODUCT GRID 
 function formatPrice(n) { return '₱' + n.toLocaleString('en-PH'); }
 
-function renderProducts(filter) {
+function renderProducts() {
     var grid = document.getElementById('product-grid');
     if (!grid) return;
+
+    var activeTab = document.querySelector('.filter-tab.active');
+    var filter = activeTab ? activeTab.dataset.filter : 'all';
+    
+    var searchInput = document.getElementById('product-search');
+    var query = searchInput ? searchInput.value.toLowerCase().trim() : '';
+
     var list = filter === 'all' ? PRODUCTS : PRODUCTS.filter(function (p) { return p.category === filter; });
+    
+    if (query) {
+        list = list.filter(function (p) {
+            return p.name.toLowerCase().includes(query) || p.type.toLowerCase().includes(query);
+        });
+    }
+
+    if (list.length === 0) {
+        grid.innerHTML = '<div style="grid-column: 1 / -1; text-align: center; padding: 40px; color: var(--text-muted);">No products found matching your search.</div>';
+        return;
+    }
+
     grid.innerHTML = list.map(function (p) {
         var badge = p.sale ? '<span class="p-badge">SALE</span>' : '';
         var originalPrice = p.originalPrice ? '<s class="p-original">' + formatPrice(p.originalPrice) + '</s> ' : '';
@@ -291,16 +310,23 @@ function renderProducts(filter) {
 }
 
 
-// FILTER TABS 
+// FILTER TABS & SEARCH
 function initFilters() {
     var tabs = document.querySelectorAll('.filter-tab');
     tabs.forEach(function (tab) {
         tab.addEventListener('click', function () {
             tabs.forEach(function (t) { t.classList.remove('active'); });
             tab.classList.add('active');
-            renderProducts(tab.dataset.filter);
+            renderProducts();
         });
     });
+
+    var searchInput = document.getElementById('product-search');
+    if (searchInput) {
+        searchInput.addEventListener('input', function() {
+            renderProducts();
+        });
+    }
 }
 
 
@@ -525,7 +551,7 @@ function placeOrder() {
 
 // INIT 
 document.addEventListener('DOMContentLoaded', function () {
-    renderProducts('all');
+    renderProducts();
     initFilters();
     updateCartBadge();
 

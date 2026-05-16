@@ -39,9 +39,46 @@
     border-bottom: 1px solid var(--border);
     padding: 0;
 }
+.filter-bar-wrap .wrap {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+    padding: 12px 0;
+}
 .filter-bar {
     display: flex; gap: 4px;
-    padding: 12px 0;
+}
+.search-bar {
+    display: flex;
+    align-items: center;
+    position: relative;
+    width: 100%;
+    max-width: 300px;
+}
+.search-bar input {
+    width: 100%;
+    padding: 10px 16px 10px 38px;
+    border: 1.5px solid var(--border);
+    border-radius: 999px;
+    background: var(--bg);
+    color: var(--heading);
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    transition: all 0.2s ease;
+}
+.search-bar input:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(168, 192, 224, 0.15);
+}
+.search-bar svg {
+    position: absolute;
+    left: 14px;
+    color: var(--text-muted);
+    width: 16px;
+    height: 16px;
 }
 .filter-tab {
     padding: 8px 22px;
