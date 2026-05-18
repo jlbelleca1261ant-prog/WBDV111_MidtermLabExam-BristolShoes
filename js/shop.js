@@ -1,11 +1,39 @@
 // ============================================================
-//  Bristol Shoes - Shop Engine
-//  Product catalog, filter tabs, quick-view modal, cart system
+//  Bristol Shoes - Shop Engine (shop.js)
+//  Ito ang MAIN brain ng Products page. Lahat ng interactive
+//  features doon ay nandito:
+//  - Nag-re-render ng product cards sa grid
+//  - Nagha-handle ng filter tabs (All, Men's, Women's) at search
+//  - Nagbu-bukas ng Quick View modal pag clinick ang product
+//  - Nagma-manage ng shopping cart (add, remove, qty change)
+//  - Nagbu-bukas ng checkout modal at nagpo-process ng orders
 // ============================================================
 
+// 'use strict' = strict mode ng JavaScript.
+// Nagde-detect ito ng common coding mistakes at nagba-ban ng unsafe features.
+// Halimbawa: hindi ka makakapaggamit ng undeclared variables sa strict mode.
+// Best practice ito para maiwasan ang bugs na mahirap hanapin.
 'use strict';
 
-//PRODUCT CATALOG (real Bristol data) 
+// ============================================================
+// PRODUCT CATALOG
+// Ito ang data store ng lahat ng products ng Bristol Shoes.
+// Array of objects — bawat object = isang product na may:
+//   id           = unique number identifier ng product
+//   category     = 'men' o 'women' — ginagamit ng filter tabs
+//   type         = klase ng sapatos (Oxford, Loafer, Mule, etc.)
+//   name         = pangalan ng product
+//   price        = actual selling price (in Philippine Peso)
+//   originalPrice = original price bago mag-sale (null pag hindi sale item)
+//   img          = main product image URL
+//   imgs         = array ng lahat ng images (para sa thumbnail strip sa modal)
+//   sizes        = array ng available sizes (EU sizing)
+//   unavailable  = array ng sizes na out of stock (greyed out sa size selector)
+//   desc         = product description na lumalabas sa quick-view modal
+//   sale         = true/false — kung true, may SALE badge ang card
+//
+// Lahat ng images ay direktang kinukuha mula sa bristolshoes.ph CDN.
+// ============================================================
 var PRODUCTS = [
     // Men's Oxford
     {
@@ -198,7 +226,16 @@ var PRODUCTS = [
 ];
 
 
-// CART (persisted in localStorage) 
+// ============================================================
+// CART SYSTEM
+// Gumagamit ng localStorage para i-persist ang cart data.
+// ibig sabihin: kahit mag-refresh o mag-close ng browser,
+// nandoon pa rin ang items sa cart pag bumalik ang user.
+//
+// localStorage = key-value storage sa browser. JSON.stringify()
+// ang kino-convert ng JS array papuntang JSON string para ma-save.
+// JSON.parse() ang nagco-convert pabalik sa JS array pag kinukuha.
+// ============================================================
 function getCart() {
     try { return JSON.parse(localStorage.getItem('bristol_cart') || '[]'); }
     catch (e) { return []; }
@@ -206,6 +243,12 @@ function getCart() {
 function saveCart(cart) {
     localStorage.setItem('bristol_cart', JSON.stringify(cart));
 }
+// addToCart() — nagdadagdag ng isang item sa cart.
+// Logic: bawat cart item ay may unique 'key' = productId + '-' + size
+// (e.g. '1-42' = product ID 1, size 42).
+// Pag nandoon na ang item na iyon (same product + same size),
+// dinagdagan lang ang qty ng 1 (hindi nagdadagdag ng bagong entry).
+// Kung bago ang item, nagdadagdag ng bagong object sa cart array.
 function addToCart(productId, size) {
     var cart = getCart();
     var product = PRODUCTS.find(function (p) { return p.id === productId; });
@@ -246,6 +289,9 @@ function changeQty(key, delta) {
     updateCartBadge();
     renderCartSidebar();
 }
+// cartTotal() — nag-co-compute ng total price ng lahat ng items sa cart.
+// .reduce() = nag-i-iterate sa bawat item at nag-a-add ng (price x qty) sa running sum.
+// Simula sa 0, bawat item ay dinadagdag sa sum, hanggang makuha ang grand total.
 function cartTotal() {
     return getCart().reduce(function (sum, i) { return sum + i.price * i.qty; }, 0);
 }
@@ -271,6 +317,14 @@ function animateCartIcon() {
 // RENDER PRODUCT GRID 
 function formatPrice(n) { return '₱' + n.toLocaleString('en-PH'); }
 
+// renderProducts() — ang function na nag-ge-generate ng HTML ng lahat ng product cards
+// at ini-inject sa #product-grid div sa products.html.
+// Tinitingnan niya ang:
+//   1. Active filter tab (All / Men's / Women's) — para malaman kung anong category ipapakita
+//   2. Search input value — para i-filter pa ng products na nagtutugma sa search query
+// Tapos gine-generate niya ang HTML string para sa bawat matching product
+// at ilalagay sa innerHTML ng #product-grid.
+// Pag walang matching products, nagpapakita ng 'No products found' message.
 function renderProducts() {
     var grid = document.getElementById('product-grid');
     if (!grid) return;
@@ -310,7 +364,15 @@ function renderProducts() {
 }
 
 
+// ============================================================
 // FILTER TABS & SEARCH
+// initFilters() = nagla-lagay ng click listeners sa filter buttons
+// at input listener sa search field.
+// Pag na-click ang tab o nag-type sa search:
+//   1. I-update ang active tab styling
+//   2. Tawagin ang renderProducts() para i-refresh ang grid
+// Real-time ang search — bawat keystroke ay nag-ti-trigger ng re-render.
+// ============================================================
 function initFilters() {
     var tabs = document.querySelectorAll('.filter-tab');
     tabs.forEach(function (tab) {
@@ -330,7 +392,18 @@ function initFilters() {
 }
 
 
+// ============================================================
 // QUICK-VIEW MODAL
+// currentProduct = nag-iimbak ng currently viewed product object.
+// selectedSize   = nag-iimbak ng size na pinili ng user sa modal.
+// buyNowItem     = temporary storage para sa 'Buy Now' flow
+//                  (direktang papunta sa checkout, hindi dadaan sa cart).
+//
+// openModal(id) — kinukuha ang product by ID mula sa PRODUCTS array,
+// gine-generate ang buong HTML ng modal content (images, details, sizes),
+// at ini-inject ito sa .modal-body div. Tapos nagdadagdag ng 'open' class
+// sa overlay para ipakita ang modal at ni-lock ang page scroll.
+// ============================================================
 var currentProduct = null;
 var selectedSize = null;
 var buyNowItem = null;
@@ -442,7 +515,17 @@ function modalBuyNow() {
 }
 
 
-// ── CART SIDEBAR ──────────────────────────────────────────────
+// ============================================================
+// CART SIDEBAR FUNCTIONS
+// openCartSidebar()  = nag-re-render ng cart items, tapos nagdadagdag
+//                      ng 'open' class sa sidebar at overlay para lumabas.
+// closeCartSidebar() = nagtatanggal ng 'open' class para magsara.
+// renderCartSidebar() = nag-ge-generate ng HTML para sa bawat cart item
+//                       (image, name, size, price, qty controls, remove button)
+//                       at ini-inject sa #cart-items div.
+//                       Pag walang items: nagpapakita ng empty cart message.
+//                       Pag may items: nagpapakita ng cart footer (total + checkout button).
+// ============================================================
 function openCartSidebar() {
     renderCartSidebar();
     document.getElementById('cart-sidebar').classList.add('open');
@@ -488,7 +571,22 @@ function renderCartSidebar() {
 }
 
 
-// CHECKOUT (simple modal with payment options)
+// ============================================================
+// CHECKOUT SYSTEM
+// openCheckout(isBuyNow) — nagbu-bukas ng checkout modal.
+//   isBuyNow = true  → ginagamit ang buyNowItem (single item lang, hindi buong cart)
+//   isBuyNow = false → ginagamit ang buong cart
+// Nag-po-populate ng order summary sa checkout modal (items, subtotal, total).
+// Shipping ay fixed na ₱150 para sa lahat.
+//
+// placeOrder() — tinatawag pag na-submit ang checkout form.
+//   1. Tinitingnan kung may selected payment method — kung wala, nagpapakita ng alert.
+//   2. Kung Buy Now: ni-clear lang ang buyNowItem.
+//      Kung cart: binubura ang buong cart sa localStorage + ina-update ang badge.
+//   3. Isinasara ang checkout modal.
+//   4. Ipinapakita ang order success toast notification sa ibaba ng screen.
+//      Pagkatapos ng 3.5 seconds, natatanggal ang toast.
+// ============================================================
 function openCheckout(isBuyNow) {
     // Populate order summary
     var itemsList = document.getElementById('checkout-items-list');
@@ -549,7 +647,16 @@ function placeOrder() {
 }
 
 
-// INIT 
+// ============================================================
+// INITIALIZATION — runs pag fully loaded na ang HTML (DOM ready).
+// DOMContentLoaded event = nag-fi-fire pag tapos na mag-parse ng HTML ang browser.
+// Ginagawa natin dito:
+//   1. renderProducts()  = i-populate ang product grid sa page load
+//   2. initFilters()     = i-setup ang filter tab at search listeners
+//   3. updateCartBadge() = ipakita ang cart count mula sa localStorage
+//   4. Modal backdrop click = pag clinick ang dark overlay ng modal, isara ito
+//   5. Cart overlay click  = pag clinick ang dark bg ng cart sidebar, isara ito
+// ============================================================
 document.addEventListener('DOMContentLoaded', function () {
     renderProducts();
     initFilters();
