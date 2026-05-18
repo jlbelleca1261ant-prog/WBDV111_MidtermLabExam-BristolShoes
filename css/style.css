@@ -1,38 +1,8 @@
-/* ==============================================
-   BRISTOL SHOES — Stylesheet (Theme-Complete)
-   HTML = skeleton · CSS = makeup + physics
-
-   Paano ito gumagana:
-   Ang HTML ang nagsasabi ng WHAT (anong laman ang page).
-   Ang CSS ang nagsasabi ng HOW IT LOOKS (colors, sizes, positions).
-   Hiwalay sila para mas organized — hindi kailangan i-edit ang HTML para lang baguhin ang kulay.
-   ============================================== */
-
-/*
-   @import — dito nilo-load naten ang mga Google Fonts mula sa internet.
-   'Playfair Display' = yung elegant serif font na ginagamit sa malalaking headings (h1, h2).
-   'Inter' = yung clean sans-serif font para sa body text, labels, at buttons.
-   Kung hindi ma-load ang Google (offline), mag-fa-fallback sa 'sans-serif' — default ng browser.
-   display=swap = ipinapakita muna ang fallback font habang naglo-load ang custom font,
-                  kaya hindi blank ang text habang nagda-download ng font.
-*/
+/* Bristol Shoes — Main Stylesheet */
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;500;600&display=swap');
 
 
-/* ==============================================
-   THEME VARIABLES — every color lives here
-
-   Ito ang "design system" ng website naten.
-   CSS Variables (--variable-name) = parang mga variable sa programming.
-   I-define mo once dito, gamitin kahit saan sa buong stylesheet.
-   Bakit? Para pag gusto mong palitan ang primary color, DITO KA LANG mag-e-edit — isa lang.
-   Hindi mo kailangan hanapin ang lahat ng blue sa buong file.
-
-   :root = pinaka-top ng CSS hierarchy — lahat ng elements ay mag-i-inherit ng variables dito.
-   [data-theme="light"] = applies pag light mode ang aktibo.
-   [data-theme="dark"]  = applies pag dark mode. Ang theme.js ang nagba-bago ng data-theme attribute.
-   ============================================== */
-
+/* --- THEME VARIABLES --- */
 :root,
 [data-theme="light"] {
     --bg: #F4F6FA;
@@ -81,22 +51,7 @@
 }
 
 
-
-
-/* ==============================================
-   RESET + BASE
-
-   Bawat browser (Chrome, Firefox, Edge) ay may sariling default styles.
-   Halimbawa: ang <h1> sa Chrome ay may ibang default margin kaysa sa Firefox.
-   Para consistent ang look sa lahat ng browser, "nire-reset" naten lahat ng defaults.
-
-   box-sizing: border-box — SUPER IMPORTANT na rule.
-   Default ng browser: width ay NOT kasama ang padding at border.
-   Halimbawa: div na 100px wide + 20px padding = 140px ang actual na laki. Kalokah diba?
-   box-sizing: border-box = ang width AY kasama na ang padding at border.
-   100px + 20px padding = 100px pa rin ang total width. Much more predictable.
-   ============================================== */
-
+/* --- RESET + BASE --- */
 html {
     scroll-behavior: smooth;
     box-sizing: border-box;
@@ -110,12 +65,6 @@ html {
     box-sizing: inherit;
 }
 
-/*
-   Naglalagay tayo ng smooth transition ONLY sa specific elements na nagbabago ng background color
-   pag mag-switch ng theme. Hindi natin ginagawa ito sa lahat ng elements (universal selector)
-   kasi magiging mabagal ang page — lahat ng elements ay mag-re-calculate ng styles nang sabay-sabay.
-   Selective lang = mas mabilis, mas smooth ang theme switching.
-*/
 body,
 nav,
 .product,
@@ -137,9 +86,8 @@ body {
     font-family: 'Inter', sans-serif;
     background: var(--bg);
     color: var(--text);
-    line-height: 1.6;            /* 1.6x ang font-size = comfortable na espasyo sa pagitan ng mga linya */
-    padding-top: 88px;           /* Space para sa fixed navbar — kung wala ito, matatakpan ng nav ang content sa tuktok */
-    /* GPU-accelerated scrolling — para sa iOS, smoother ang scrolling pag may property na ito */
+    line-height: 1.6;
+    padding-top: 88px;
     -webkit-overflow-scrolling: touch;
 }
 
@@ -170,16 +118,7 @@ h2 em {
 }
 
 
-/* ==============================================
-   WRAP — yung container na nagce-center ng content
-
-   .wrap = ang "container" class na ginagamit sa halos lahat ng sections.
-   max-width: 1100px = ang content ay hindi lalawak ng higit sa 1100px.
-                       Sa malalaking monitor, hindi mapupunta ang text sa dulo-dulo ng screen.
-   margin: 0 auto = auto margin sa left at right = centered horizontally ang content.
-   padding: 0 24px = may 24px na espasyo sa magkabilang sides para hindi mag-touch ang content sa dingding.
-   ============================================== */
-
+/* --- WRAP --- */
 .wrap {
     max-width: 1100px;
     margin: 0 auto;
@@ -187,20 +126,7 @@ h2 em {
 }
 
 
-/* ==============================================
-   NAVBAR — Floating Pill Glass Design
-
-   Yung floating, pill-shaped, semi-transparent navbar na nakikita naten sa tuktok.
-   position: fixed = lagi siyang nasa tuktok kahit mag-scroll — hindi gumagalaw.
-   left: 50% + transform: translateX(-50%) = classic CSS trick para i-center ang fixed element.
-                                             left:50% ay relative sa viewport, translateX(-50%)
-                                             ay nag-aalis ng half ng width ng element — result: centered.
-   backdrop-filter: blur() = yung frosted glass effect. Ini-blur ang background BEHIND the navbar.
-                             Para gumana ito, kailangan ng transparent/semi-transparent background.
-   z-index: 1000 = priority ng layering. Mas mataas = mas nasa ibabaw. 
-                   1000 = siguradong hindi matatakpan ng ibang elements ang navbar.
-   ============================================== */
-
+/* --- NAVBAR --- */
 nav {
     position: fixed;
     top: 16px;
@@ -218,7 +144,6 @@ nav {
         0 1px 0 rgba(255, 255, 255, 0.55) inset;
     padding: 10px 28px;
     z-index: 1000;
-    /* GPU layer for smooth scrolling */
     will-change: transform;
     transform: translateX(-50%) translateZ(0);
 }
@@ -313,13 +238,6 @@ nav .wrap {
     transform: scale(1.05);
 }
 
-/*
-   Theme Icon Swapping — paano nagba-bago ang sun/moon icon.
-   Sa light mode: itago ang sun icon (walang sense na ipakita ang sun pag light na), ipakita ang moon.
-   Sa dark mode:  itago ang moon icon, ipakita ang sun (para i-suggest na pwedeng mag-switch sa light).
-   Ang theme.js ang nag-i-inject ng dalawang icons (sun at moon) sa button — ang CSS lang ang
-   nagde-decide kung alin ang visible base sa current data-theme ng <html> tag.
-*/
 [data-theme="light"] .sun-icon { display: none; }
 [data-theme="light"] .moon-icon { display: block; }
 
@@ -327,21 +245,7 @@ nav .wrap {
 [data-theme="dark"] .moon-icon { display: none; }
 
 
-/* ==============================================
-   HERO SECTION
-
-   Yung malaking banner section na pinaka-unang nakikita ng user.
-   ::before pseudo-element = naglalagay ng animating background image.
-   ::after pseudo-element  = naglalagay ng dark gradient overlay para mabasa ang text.
-   Dalawang "layer" ang nagse-stack: background image → dark overlay → actual content.
-   z-index sa .hero .wrap = kailangan para maging nasa itaas ng mga pseudo-elements ang text content.
-
-   @keyframes heroKenBurns = yung mabagal na zoom at pan effect ng background image.
-   Ken Burns effect = cinematic technique na ginagawang "alive" ang static images.
-   animation: 25s = 25 segundo bago mag-loop — sobrang bagal na hindi halatang gumagalaw,
-                    pero nagbibigay ng "living wallpaper" na feel sa background.
-   ============================================== */
-
+/* --- HERO --- */
 .hero {
     background: #0a1628;
     color: white;
@@ -350,7 +254,6 @@ nav .wrap {
     overflow: hidden;
 }
 
-/* Animated background image with Ken Burns effect */
 .hero::before {
     content: '';
     position: absolute;
@@ -362,7 +265,6 @@ nav .wrap {
     pointer-events: none;
 }
 
-/* Dark gradient overlay for text readability */
 .hero::after {
     content: '';
     position: absolute;
@@ -373,7 +275,6 @@ nav .wrap {
     pointer-events: none;
 }
 
-/* Ensure content sits above the background layers */
 .hero .wrap {
     position: relative;
     z-index: 1;
@@ -439,10 +340,7 @@ nav .wrap {
 }
 
 
-/* ==============================================
-   PAGE HEADER (About / Products / Contact banner)
-   ============================================== */
-
+/* --- PAGE HEADER --- */
 .page-header {
     background: linear-gradient(135deg, #1B2A4A 0%, #0f1e38 100%);
     color: white;
@@ -467,18 +365,7 @@ nav .wrap {
 }
 
 
-/* ==============================================
-   SECTIONS — mga content blocks ng page
-
-   Tatlong section types ang ginagamit naten:
-   .section       = default section, gumagamit ng --bg color (light gray o dark)
-   .section-white = white/card background section — para sa main content areas
-   .section-navy  = dark navy gradient background — para sa CTAs at stats
-
-   Consistent ang padding (72px top at bottom) sa lahat ng sections para
-   may maayos na visual rhythm ang page — hindi masyadong siksik o maluwag.
-   ============================================== */
-
+/* --- SECTIONS --- */
 .section {
     padding: 72px 0;
     background: var(--bg);
@@ -511,17 +398,7 @@ nav .wrap {
 }
 
 
-/* ==============================================
-   TWO-COLUMN LAYOUT
-
-   Ginagamit sa About preview (index.html) at Our Story (about.html).
-   display: flex = naglalagay ng items side-by-side.
-   gap: 56px = espasyo sa pagitan ng dalawang columns.
-   flex: 1 sa bawat .col = pantay-pantay ang laki ng dalawang columns — 50% at 50%.
-   Sa mobile (max-width: 680px), ang media query sa baba ang mag-ba-bago ng
-   flex-direction sa column — mag-iimbak ito ng dalawang columns pababa, hindi side by side.
-   ============================================== */
-
+/* --- TWO-COLUMN LAYOUT --- */
 .two-col {
     display: flex;
     align-items: center;
@@ -547,21 +424,7 @@ nav .wrap {
 }
 
 
-/* ==============================================
-   BUTTONS
-
-   Dalawang button styles ang ginagamit naten:
-   .btn         = solid filled button. Background = --btn-bg (dark sa light mode, white sa dark mode).
-   .btn-outline = transparent button na may border lang. Ginagamit sa dark backgrounds (navy section, hero).
-
-   transition = ginagawa ang hover effects na smooth — hindi biglaang nagbabago ang color/position.
-   transform: translateY(-1px) sa hover = nag-le-lift ng 1px pataas ang button pag hovered.
-                                          Subtle pero nagmumukha itong interactive at clickable.
-
-   .hero .btn = special override para sa hero section buttons — mas bright ang styling
-                para visible kahit may dark background ang hero.
-   ============================================== */
-
+/* --- BUTTONS --- */
 .btn {
     display: inline-block;
     padding: 12px 28px;
@@ -582,7 +445,6 @@ nav .wrap {
     transform: translateY(-1px);
 }
 
-/* Premium High-Contrast Hero CTA Button */
 .hero .btn {
     background: #ffffff;
     color: #111D35;
@@ -622,17 +484,7 @@ nav .wrap {
 }
 
 
-
-/* ==============================================
-   STATS SECTION (About page)
-
-   Yung tatlong malaking numbers (40+, 200+, 100%) sa About page.
-   display: flex = naglalagay ng tatlong .stat divs side-by-side.
-   flex: 1 sa .stat = pantay-pantay ang lapad ng tatlong stats.
-   .stat-num = font-size: 52px at Playfair Display font para sa malaking visual impact.
-   Sa mobile, ang media query sa baba ang mag-ba-bago ng layout sa column (pababa).
-   ============================================== */
-
+/* --- STATS (About page) --- */
 .stats {
     display: flex;
     gap: 20px;
@@ -659,25 +511,7 @@ nav .wrap {
 }
 
 
-/* ==============================================
-   CONTACT PAGE STYLES
-
-   .contact-row = two-column layout ng contact page — form sa kaliwa, store info sa kanan.
-   .form-group  = container ng bawat input field (label + input + error message).
-
-   Input focus styles: pag na-click ang input field, naglalagay ng --accent colored border
-   at subtle glow (box-shadow) para malinaw na nakikita ng user kung anong field ang ginagamit.
-
-   .field-ok  = green border — valid ang input.
-   .field-err = red border — may error ang input.
-   .field-error span = yung red error text na lumalabas sa ilalim ng input.
-   Si form.js ang naglalagay ng field-ok/field-err classes at nag-i-inject ng error messages.
-
-   .info-item = bawat store info row (address, phone, email, hours) sa right column.
-   .map = yung Google Maps iframe container — may rounded corners at border.
-   .form-success = yung green success card na lumalabas kapag na-send na ang form.
-   ============================================== */
-
+/* --- CONTACT PAGE --- */
 .contact-row {
     display: flex;
     gap: 56px;
@@ -827,18 +661,7 @@ nav .wrap {
 }
 
 
-/* ==============================================
-   FOOTER
-
-   Yung dark section sa pinaka-ibaba ng bawat page.
-   --footer-bg = variable na napaka-dark na navy (halos black) para sa light mode,
-                 at pitch black para sa dark mode.
-   .footer-row = flex container ng tatlong columns: brand (flex:2), quick links, contact info.
-   .footer-wide = yung brand column — mas maluwag (flex:2) kaysa sa ibang columns (flex:1)
-                  kaya mas malaki ang bahagi nito sa footer.
-   .footer-bottom = yung copyright text sa pinaka-ibaba ng footer.
-   ============================================== */
-
+/* --- FOOTER --- */
 footer {
     background: var(--footer-bg);
     color: white;
@@ -923,24 +746,7 @@ footer .logo-icon {
 }
 
 
-/* ==============================================
-   SCROLL ANIMATIONS
-
-   Ito ang CSS side ng scroll reveal animations.
-   Si scroll.js ang nagdadagdag ng class="reveal" sa elements, at ito ang CSS na nag-a-apply ng styles.
-
-   .reveal = invisible at slightly shifted down (opacity:0, translateY:28px)
-   .reveal.visible = visible at nasa normal position (opacity:1, translateY:0)
-
-   transition = smooth animation mula sa invisible→visible at shifted→normal position.
-   0.55s = 550 milliseconds ang duration ng animation — maayos, hindi masyadong mabilis o mabagal.
-
-   Ang dalawang states ay gumagana ng magkasama:
-   1. scroll.js adds .reveal to elements (makes them invisible)
-   2. IntersectionObserver in scroll.js adds .visible when element enters viewport
-   3. CSS transition smoothly animates the change
-   ============================================== */
-
+/* --- SCROLL ANIMATIONS --- */
 .reveal {
     opacity: 0;
     transform: translateY(28px);
@@ -953,27 +759,7 @@ footer .logo-icon {
 }
 
 
-
-
-
-
-/* ==============================================
-   HAMBURGER MENU BUTTON + MOBILE DROPDOWN
-
-   .nav-toggle = yung hamburger button (≡) sa mobile.
-   display: none by default — visible lang sa mobile via media query sa baba.
-   Tatlong .nav-toggle span = tatlong horizontal lines ng hamburger icon.
-   Pag nag-click at may class="open", ang tatlong lines ay nag-a-animate papunta sa X shape:
-     - First span: moves down + rotates 45 degrees (top-right diagonal)
-     - Middle span: nababuro (opacity:0, width:0)
-     - Third span: moves up + rotates -45 degrees (bottom-right diagonal)
-   Result: ≡ → × animation.
-
-   .mobile-nav-menu = yung dropdown menu na lumalabas pag bukas ang hamburger.
-   Hidden by default (opacity:0, pointer-events:none, transforms pababa).
-   class="open" = visible + pointer-events:all + animates back to normal position.
-   ============================================== */
-
+/* --- HAMBURGER MENU + MOBILE DROPDOWN --- */
 .nav-toggle {
     display: none;
     flex-direction: column;
@@ -1006,7 +792,6 @@ footer .logo-icon {
     transform-origin: center;
 }
 
-/* Animated X when open */
 .nav-toggle.open span:nth-child(1) {
     transform: translateY(7px) rotate(45deg);
 }
@@ -1020,7 +805,6 @@ footer .logo-icon {
     transform: translateY(-7px) rotate(-45deg);
 }
 
-/* Mobile dropdown menu */
 .mobile-nav-menu {
     display: none;
     position: fixed;
@@ -1077,24 +861,9 @@ footer .logo-icon {
 }
 
 
-/* ==============================================
-   RESPONSIVE / MOBILE MEDIA QUERIES
-
-   @media queries = nagde-detect ng screen size at nag-a-apply ng different styles.
-   Parang sinasabi naten sa CSS: "Pag ang screen ay mas maliit sa X pixels, gamitin mo itong styles."
-
-   max-width: 680px = small screens (phones)
-     - Ipakita ang hamburger button, itago ang desktop nav links
-     - Baguhin ang flex-direction ng multi-column layouts papunta sa column (pababa)
-     - Bawasan ang font sizes at padding para mag-fit sa maliit na screen
-
-   min-width: 681px and max-width: 900px = medium screens (tablets)
-     - Ilang layout adjustments para sa in-between screen sizes
-   ============================================== */
-
+/* --- RESPONSIVE --- */
 @media (max-width: 680px) {
 
-    /* Show hamburger, hide desktop links */
     .nav-toggle {
         display: flex;
     }
@@ -1107,13 +876,11 @@ footer .logo-icon {
         display: none !important;
     }
 
-    /* Tighten the pill nav on small screens */
     nav {
         padding: 10px 16px;
         width: calc(100% - 32px);
     }
 
-    /* Body spacing */
     .hero .wrap,
     .two-col,
     .cards,
