@@ -1,28 +1,104 @@
 <!DOCTYPE html>
+<!--
+    DOCTYPE declaration — ito ang unang linya na kailangang makita ng browser.
+    Sinasabi nito na "Hey browser, HTML5 format to!" 
+    Without this, ang browser mag-a-activate ng "quirks mode" which means
+    magre-render siya ng inconsistent way — parang luma pa yung rules na ginagamit niya.
+    Always FIRST line, walang exceptions.
+-->
 <html lang="en">
+<!--
+    lang="en" — kinukwento nito sa Google at sa screen readers na English ang content.
+    Screen readers are tools used by visually impaired users, they read the page aloud.
+    Kaya important ito para accessible ang site naten sa lahat.
+-->
 
 <head>
+    <!--
+        Lahat ng nasa loob ng <head> ay HINDI nakikita ng user.
+        Pero super important ito kasi dito naka-load ang fonts, stylesheets,
+        meta data, at analytics. Think of it as the backstage ng website naten.
+    -->
+
+    <!--
+        GOOGLE ANALYTICS (Google Tag Manager)
+        Purpose: Para malaman naten kung ilan ang nag-visit ng site, anong page
+        ang pinakamaraming tinutingnan, san galing ang visitors, etc.
+        Basically ito ang "spying tool" pero ethical version — para sa business insights.
+        
+        async = ibig sabihin, nilo-load ito sa background habang naglo-load ang page.
+        Kaya hindi nito pine-pause ang website load speed — magaling siyang multitask.
+        G-ZRHDGZWT0E = unique tracking ID ng Bristol Shoes website naten.
+    -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZRHDGZWT0E"></script>
     <script>
+        // Ini-initialize ang Google Analytics dito.
+        // window.dataLayer is an array — parang listahan ng lahat ng events na nangyayari sa site.
+        // Kung mag-click user ng button, nire-record iyon dito.
         window.dataLayer = window.dataLayer || [];
-        function gtag() { dataLayer.push(arguments); }
-        gtag('js', new Date());
-        gtag('config', 'G-ZRHDGZWT0E');
+        function gtag() { dataLayer.push(arguments); } // gtag() is the function na nagpapadala ng data sa Google
+        gtag('js', new Date());         // Sinasabi kay Google: "ang page ay na-load ngayon sa oras na ito"
+        gtag('config', 'G-ZRHDGZWT0E'); // Ito ang nag-co-connect sa specific na Bristol Shoes Analytics account
     </script>
 
+    <!-- UTF-8 = universal character set. Kaya nito mag-display ng Filipino characters, emojis, ₱ sign, etc. -->
     <meta charset="UTF-8">
+
+    <!--
+        viewport meta tag — ito ang SECRET na nagpa-responsive ng website naten sa mobile.
+        Without this, mag-zo-zoom out ang phone para makita ang buong desktop version — kaya nagiging maliliit ang text.
+        width=device-width = gamitin ang lapad ng screen ng device bilang lapad ng page.
+        initial-scale=1.0  = huwag mag-zoom sa una, 1:1 ratio lang.
+    -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!--
+        SEO meta description — ito ang text na makikita sa ilalim ng site title sa Google search results.
+        Parang "elevator pitch" ng website sa Google. Mahalaga ito para ma-click ng users.
+    -->
     <meta name="description" content="Bristol Shoes Marikina - Handcrafted leather shoes for men and women.">
+
+    <!-- Browser tab title — ito ang nakikita sa tab ng browser at sa Google search results bilang page name. -->
     <title>Bristol Shoes Marikina - Home</title>
+
+    <!--
+        Favicon — yung maliit na icon sa browser tab sa tabi ng page title.
+        Ginagamit naten ang SVG format kasi scalable siya — hindi mag-blurry kahit anong size.
+    -->
     <link rel="icon" type="image/svg+xml" href="images/favicon.svg">
+
+    <!--
+        External CSS — dito nilo-load ang style.css naten.
+        "External" = separate file ang CSS, hindi inline inside the HTML.
+        Mas organized kasi naka-separate ang structure (HTML) at design (CSS).
+        rel="stylesheet" = sinasabi sa browser na CSS file ito, hindi ibang uri ng link.
+    -->
     <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
+    <!--
+        Lahat ng nakikita ng user sa screen ay nasa loob ng <body>.
+        Ginagamit naten ang "semantic HTML" — ibig sabihin gumagamit tayo ng
+        <nav>, <section>, <footer> etc. na may meaning, hindi lang generic <div>.
+        Mas naiintindihan ng Google at screen readers ang semantic HTML.
+    -->
 
-    <!-- Navigation bar -->
+    <!-- ============================================================
+         NAVIGATION BAR
+         Ito ang top bar na lagi nakikita ng user kahit mag-scroll siya.
+         "Fixed" ang positioning nito kaya hindi ito nawawala sa view.
+         Ginagamit ang <nav> na semantic tag para malaman ng screen readers
+         na navigation links ito, hindi ordinary content.
+         ============================================================ -->
     <nav>
         <div class="wrap">
+            <!--
+                Logo — naka-wrap sa <a href="index.html"> para pag clinick,
+                bumabalik sa homepage. .logo-icon = yung bilog na "B",
+                .logo-name = yung text na "Bristol Shoes".
+                Pag clinick ang buong logo, pareho silang clickable.
+            -->
             <a href="index.html" class="logo">
                 <div class="logo-icon">B</div>
                 <div>
@@ -30,14 +106,38 @@
                     <span class="logo-sub">Marikina Branch</span>
                 </div>
             </a>
+
+            <!--
+                Desktop navigation links — visible lang ito sa malaking screens (tablets, laptops, desktops).
+                Sa mobile, itinatago ito ng CSS at pinalitan ng hamburger menu.
+                class="active" sa "Home" = nag-hi-highlight ito ng current page link
+                para malaman ng user kung nasaan siya ngayon sa website.
+            -->
             <ul class="nav-links">
                 <li><a href="index.html" class="active">Home</a></li>
                 <li><a href="about.html">About</a></li>
                 <li><a href="products.html">Products</a></li>
                 <li><a href="contact.html">Contact</a></li>
             </ul>
+
+            <!-- Right side ng navbar: theme toggle button + hamburger button -->
             <div style="display: flex; align-items: center; gap: 8px;">
+                <!--
+                    THEME TOGGLE BUTTON
+                    Pag clinick, mag-s-switch ang site from Light Mode to Dark Mode (or vice versa).
+                    Walang hardcoded icon dito sa HTML — si theme.js ang maglalagay ng ☀️/🌙 icon dynamically.
+                    Ginawa ito para mas malinis ang HTML code.
+                    Naaalala niya ang pinili ng user via localStorage — kahit mag-refresh ka, Hindi mare-reset.
+                -->
                 <button id="theme-toggle" class="theme-nav-btn" aria-label="Toggle Theme"></button>
+
+                <!--
+                    HAMBURGER MENU BUTTON — visible ONLY on mobile screens.
+                    Yung tatlong <span> = tatlong horizontal lines na kinakatawan ng ≡ (hamburger icon).
+                    Pag clinick, si scroll.js ang nagda-detect at nag-a-add ng "open" class
+                    sa mobile menu para lumabas siya sa screen.
+                    aria-expanded="false" = sinasabi sa screen readers na naka-close pa ang menu.
+                -->
                 <button class="nav-toggle" id="nav-toggle" aria-label="Menu" aria-expanded="false">
                     <span></span><span></span><span></span>
                 </button>
@@ -45,7 +145,13 @@
         </div>
     </nav>
 
-    <!-- Mobile Nav Dropdown Burger -->
+    <!-- ============================================================
+         MOBILE NAVIGATION DROPDOWN
+         Ito ang hidden menu na lumalabas pag clinick ang hamburger button sa mobile.
+         By default, invisible ito (CSS hides it using opacity:0 and pointer-events:none).
+         Si scroll.js ang naglalagay ng class="open" para ilabas ito,
+         at tinatanggal ang class para itago ulit.
+         ============================================================ -->
     <div class="mobile-nav-menu" id="mobile-nav-menu">
         <a href="index.html" class="active">Home</a>
         <a href="about.html">About</a>
@@ -53,24 +159,52 @@
         <a href="contact.html">Contact</a>
     </div>
 
-    <!-- Hero Section (Homepage) -->
+    <!-- ============================================================
+         HERO SECTION
+         Ito ang pinaka-unang makikita ng visitor pag nag-land sa site.
+         Ang goal: agad malaman ng user kung ano ang binibenta naten + i-hook sila.
+         Laman: big headline, short description, at dalawang call-to-action (CTA) buttons.
+         Importante ang hero section kasi ito ang "first impression" ng site.
+         ============================================================ -->
     <section class="hero">
         <div class="wrap">
             <div class="hero-text">
+                <!--
+                    <h1> = pinaka-importanteng heading sa buong page.
+                    Rule: ISA LANG dapat ang <h1> per page.
+                    Ito ang pinaka-binabasa ng Google para malaman kung ano ang topic ng page.
+                    <em> = emphasis tag, nag-i-italicize ng word para sa visual effect.
+                -->
                 <h1>Step Into <em>Timeless</em> Craftsmanship</h1>
                 <p>Every Bristol shoe is handcrafted by Marikina's master cobblers using premium leather.</p>
+
                 <div class="hero-btns">
+                    <!-- .btn = solid filled button (dark background). .btn-outline = transparent button with border. -->
                     <a href="products.html" class="btn">Explore Collection</a>
                     <a href="about.html" class="btn-outline">Our Story</a>
                 </div>
             </div>
+
             <div class="hero-img">
+                <!--
+                    alt="..." = alternative text for the image.
+                    3 purposes nito:
+                    1. Pag hindi ma-load ang image, ito ang makikita ng user as replacement text.
+                    2. Binabasa ito ng screen readers para sa visually impaired users.
+                    3. Ginagamit ng Google para maintindihan kung ano ang subject ng image (SEO).
+                -->
                 <img src="images/Bristol.png" alt="Bristol handcrafted leather shoes">
             </div>
         </div>
     </section>
 
-    <!-- About Preview -->
+    <!-- ============================================================
+         ABOUT PREVIEW SECTION
+         Hindi ito yung full about page — sneak peek lang ito.
+         Two-column layout: image sa kaliwa, text sa kanan.
+         Purpose: mabigyan ng background story ang brand at i-guide ang user
+         papunta sa full About page via "Learn More" button.
+         ============================================================ -->
     <section class="section-white">
         <div class="wrap two-col">
             <div class="col">
@@ -86,7 +220,13 @@
     </section>
 
 
-    <!-- Call to Action -->
+    <!-- ============================================================
+         CALL TO ACTION (CTA) SECTION
+         Dark navy background na may malaking text at button.
+         Purpose: i-convince ang user na puntahan ang physical store.
+         CTA sections are the most important conversion tools sa website —
+         sila ang nagsasabi sa users kung ano ang gagawin nila next.
+         ============================================================ -->
     <section class="section-navy">
         <div class="wrap">
             <h2>Experience Bristol <em>In Person</em></h2>
@@ -95,10 +235,18 @@
         </div>
     </section>
 
-    <!-- Footer -->
+    <!-- ============================================================
+         FOOTER
+         Ito ang nasa pinaka-ibaba ng bawat page — consistent across all pages.
+         Laman: logo, quick navigation links, at contact details ng store.
+         Purpose: kahit saan page ka man, lagi mong makikita ang contact info
+         at links para madaling mag-navigate kahit walang scroll back to top.
+         ============================================================ -->
     <footer>
         <div class="wrap">
             <div class="footer-row">
+
+                <!-- Brand column: logo + tagline ng store sa footer -->
                 <div class="footer-wide">
                     <a href="index.html" class="logo">
                         <div class="logo-icon">B</div>
@@ -108,6 +256,8 @@
                         </div>
                     </a>
                 </div>
+
+                <!-- Quick navigation links na naka-ulit sa footer para sa convenience ng users na hindi na mag-scroll up -->
                 <div class="footer-col">
                     <h4>Quick Links</h4>
                     <ul>
@@ -117,6 +267,8 @@
                         <li><a href="contact.html">Contact</a></li>
                     </ul>
                 </div>
+
+                <!-- Contact info ng store — para hindi na kailangan pumunta pa sa Contact page para makita ang address/number -->
                 <div class="footer-col footer-contact">
                     <h4>Contact</h4>
                     <p><strong>Email:</strong> bristolshoes@hotmail.com</p>
@@ -125,12 +277,32 @@
                         City, Philippines 1807.</p>
                 </div>
             </div>
+
+            <!--
+                Copyright bar.
+                &copy; = HTML entity na nag-re-render bilang © symbol.
+                &amp;  = HTML entity na nag-re-render bilang & symbol.
+                (Kailangan nating gumamit ng entities kasi & at < ay reserved characters sa HTML)
+            -->
             <div class="footer-bottom">
                 <p>&copy; 2026 Bristol Shoes &amp; Shoe Factory. All rights reserved.</p>
             </div>
         </div>
     </footer>
 
+    <!--
+        JAVASCRIPT FILES — pinaka-importante: naka-load sila DITO SA BABA ng <body>, HINDI sa <head>.
+        
+        Bakit? Kasi kapag nag-run ang JS, kailangang nandoon na ang HTML elements sa DOM.
+        DOM = Document Object Model = yung "map" ng lahat ng HTML elements sa browser's memory.
+        Pag naka-load ang JS sa <head>, mag-ru-run siya BAGO mabasa ang HTML,
+        kaya wala pang makikita — lahat ng getElementById() = null (walang mahanap).
+        
+        Sa ibaba ng <body> = siguradong nandoon na lahat ng HTML bago mag-run ang JS.
+        
+        theme.js  = handles light/dark mode switching + naaalala ang preference ng user via localStorage
+        scroll.js = handles hamburger menu, scroll animations, at navbar shadow effect
+    -->
     <script src="js/theme.js"></script>
     <script src="js/scroll.js"></script>
 

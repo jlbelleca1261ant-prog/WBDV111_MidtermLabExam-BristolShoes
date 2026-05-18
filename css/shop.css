@@ -1,9 +1,21 @@
 /* ============================================================
    Bristol Shoes — Shop CSS
-   Products page, quick-view modal, cart sidebar, checkout
+   Separate CSS file ito para sa Products page lang.
+   Hiwalay siya sa style.css para mas organized — ang style.css
+   ay para sa shared styles (nav, footer, buttons), habang ang
+   shop.css ay para sa product grid, modal, cart sidebar, at checkout.
+   Ang products.html lang ang nag-lo-load ng dalawang CSS files.
    ============================================================ */
 
-/* ── Cart icon in navbar ────────────────────────────────────── */
+/* ── Cart Icon in Navbar ─────────────────────────────────────
+   Yung shopping cart button sa navbar ng Products page.
+   position: relative = kailangan para ma-position ang cart-badge (red number)
+   sa ibabaw ng cart icon gamit ang absolute positioning.
+   .cart-badge = yung maliit na red circle na nagpapakita ng item count.
+   position: absolute sa badge + top/right negative values = lumalabas ito
+   sa labas ng button boundary, parang notification bubble ng Facebook.
+   @keyframes cart-pop-anim = yung bounce animation ng cart icon pag nag-add ng item.
+   ─────────────────────────────────────────────────────────── */
 .cart-nav-btn {
     position: relative;
     background: none; border: none; cursor: pointer;
@@ -33,7 +45,15 @@
 .cart-pop svg { animation: cart-pop-anim 0.35s ease; }
 
 
-/* ── Filter bar ─────────────────────────────────────────────── */
+/* ── Filter Bar + Search ─────────────────────────────────────
+   Yung row ng filter buttons (All, Men's, Women's) at search bar.
+   .filter-tab = bawat category button. Pill-shaped (border-radius: 999px).
+   .filter-tab.active = yung currently selected tab — may solid background.
+   .search-bar = wrapper ng input + search icon.
+   Ang SVG search icon ay naka-absolute position sa loob ng input
+   (left: 14px) kaya nagmumukha itong nasa loob ng input field.
+   Yung input ay may extra left padding (38px) para hindi matakpan ng icon ang text.
+   ─────────────────────────────────────────────────────────── */
 .filter-bar-wrap {
     background: var(--bg-alt);
     border-bottom: 1px solid var(--border);
@@ -102,7 +122,20 @@
 }
 
 
-/* ── Product grid ───────────────────────────────────────────── */
+/* ── Product Grid ────────────────────────────────────────────
+   display: grid = CSS Grid layout para sa product cards.
+   grid-template-columns: repeat(3, 1fr) = tatlong equal columns sa desktop.
+   1fr = '1 fraction unit' — ang available space ay hinahati ng pantay-pantay sa tatlong columns.
+   gap: 24px = espasyo sa pagitan ng cards.
+
+   .product-thumb = wrapper ng product image na may hover overlay.
+   .product-hover-overlay = yung dark overlay na may 'Quick View' text na lumalabas pag hovered.
+   opacity: 0 by default → opacity: 1 pag hovered — smooth fade in.
+
+   .p-badge = yung 'SALE' red pill label sa corner ng on-sale products.
+   position: absolute sa badge, position: relative sa .product = naglalagay ng badge
+   sa ibabaw ng product card na hindi nakakaapekto sa layout ng ibang elements.
+   ─────────────────────────────────────────────────────────── */
 .shop-section { padding-top: 40px; }
 
 .product-grid {
@@ -170,7 +203,23 @@
 .p-price strong { font-size: 15px; color: var(--heading); }
 
 
-/* ── Quick-View Modal ───────────────────────────────────────── */
+/* ── Quick-View Modal ────────────────────────────────────────
+   Yung pop-up window na lumalabas pag clinick ang isang product card.
+
+   .modal-overlay = yung dark semi-transparent background (rgba(0,0,0,0.55)).
+   position: fixed; inset: 0 = sakop nito ang BUONG viewport (fullscreen dark bg).
+   opacity: 0 + pointer-events: none + visibility: hidden by default = invisible at hindi clickable.
+   class='open' = opacity: 1 + pointer-events: all + visibility: visible = lumalabas.
+
+   .modal-container = yung actual white/dark box sa gitna.
+   transform: translateY(24px) scale(0.97) by default = slightly below center at slightly smaller.
+   class='open' .modal-container = translateY(0) scale(1) = normal position at size.
+   cubic-bezier(0.34, 1.56, 0.64, 1) = spring-like easing — may slight overshoot effect
+                                        kaya mukhang 'bouncy' ang modal pag lumalabas.
+
+   .modal-imgs = left half ng modal — product images at thumbnail strip.
+   .modal-details = right half — product name, price, sizes, add to cart button.
+   ─────────────────────────────────────────────────────────── */
 .modal-overlay {
     position: fixed; inset: 0;
     background: rgba(0,0,0,0.55);
@@ -320,7 +369,18 @@
 }
 
 
-/* ── Cart Sidebar ───────────────────────────────────────────── */
+/* ── Cart Sidebar ────────────────────────────────────────────
+   Yung sliding panel na lumalabas mula sa kanan pag clinick ang cart icon.
+
+   .cart-overlay = dark background sa likod ng sidebar. Pag clinick = nagsasara.
+   .cart-sidebar = yung actual panel.
+     right: -420px by default = nakatago sa labas ng screen (off-screen sa kanan).
+     class='open' → right: 0 = nag-slide in mula sa kanan.
+     cubic-bezier(0.34, 1.1, 0.64, 1) = spring easing para sa smooth slide animation.
+
+   .cart-items = scrollable area ng cart items. flex: 1 = pinupuno niya ang available space.
+   .cart-sidebar-footer = naka-fixed sa ibaba ng sidebar — naglalaman ng subtotal at buttons.
+   ─────────────────────────────────────────────────────────── */
 .cart-overlay {
     position: fixed; inset: 0;
     background: rgba(0,0,0,0.45);
@@ -421,7 +481,11 @@
 .cart-continue-btn:hover { border-color: var(--text-muted); color: var(--text); }
 
 
-/* ── Size Guide Modal ───────────────────────────────────────── */
+/* ── Size Guide Modal ────────────────────────────────────────
+   Separate modal para sa EU/US/CM size conversion table.
+   Mas maliit lang siya (max-width: 500px) kaysa sa product quick-view modal.
+   Naglalaman ng <table> na nagpapakita ng shoe size conversions.
+   ─────────────────────────────────────────────────────────── */
 .size-modal-overlay { align-items: center; }
 .size-container {
     max-width: 500px;
@@ -458,7 +522,20 @@
 }
 
 
-/* ── Checkout Modal ─────────────────────────────────────────── */
+/* ── Checkout Modal ──────────────────────────────────────────
+   Yung mas malaki at mas detalyadong modal para sa checkout.
+   align-items: flex-start = hindi centered vertically ang modal kasi mahaba siya.
+   max-height: 90vh + overflow-y: auto = scrollable ang modal kung hindi kasya sa screen.
+
+   .checkout-input = styled text inputs para sa name, address, email, phone.
+   .pay-option = bawat payment method card (GCash, Card, COD, etc.).
+     border: 1.5px solid --border by default.
+     class='selected' = naglalagay ng solid border at subtle background highlight
+                        para makita ng user kung anong payment ang pinili niya.
+
+   .order-summary = gray card sa dulo ng checkout na nagpapakita ng items, subtotal, shipping, total.
+   .place-order-btn = yung final submit button ng checkout form.
+   ─────────────────────────────────────────────────────────── */
 .checkout-modal-overlay { align-items: flex-start; }
 .checkout-container {
     max-width: 680px;
@@ -540,7 +617,14 @@
 .place-order-btn:hover { opacity: 0.88; transform: translateY(-1px); }
 
 
-/* ── Order success toast ────────────────────────────────────── */
+/* ── Order Success Toast ─────────────────────────────────────
+   Yung maliit na notification pill na lumalabas sa ibaba ng screen
+   pagkatapos ma-place ang order. Parang toast notification sa phone.
+   position: fixed; bottom: 90px; left: 50% + translateX(-50%) = centered sa ibaba.
+   opacity: 0 + translateY(20px) by default = invisible at slightly below final position.
+   class='show' → opacity: 1 + translateY(0) = visible at nasa tamang posisyon.
+   Si shop.js ang nagdadagdag ng 'show' class, tapos tinatanggal ulit pagkatapos ng 3.5 seconds.
+   ─────────────────────────────────────────────────────────── */
 .order-toast {
     position: fixed; bottom: 90px; left: 50%;
     transform: translateX(-50%) translateY(20px);
@@ -558,7 +642,13 @@
 }
 
 
-/* ── Responsive ─────────────────────────────────────────────── */
+/* ── Responsive Breakpoints ──────────────────────────────────
+   max-width: 900px = tablets → 2 columns ang product grid (3→2).
+   max-width: 600px = phones  → 1 column ang product grid (2→1).
+                              → Modal body nag-ba-bago ng flex-direction sa column
+                                (image sa itaas, details sa ibaba — para sa maliit na screen).
+                              → Cart sidebar nag-e-expand sa full width (100%).
+   ─────────────────────────────────────────────────────────── */
 @media (max-width: 900px) {
     .product-grid { grid-template-columns: repeat(2, 1fr); }
 }
